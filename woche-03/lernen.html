@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>13GT · Woche 3 · Drei helle Linien statt eines Regenbogens</title>
+<style>
+:root{--ink:#14283b;--sub:#405368;--blue:#075f85;--blue2:#e8f4fa;--red:#a03d35;--green:#17644d;--line:#b4c4d0;--paper:#fff;--bg:#eef2f6}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Arial,sans-serif}button,input,select{font:inherit}button,select,input[type=range]{cursor:pointer}button{min-height:42px}a{color:#075f85}a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #e3a500;outline-offset:3px}
+.top{position:sticky;top:0;z-index:5;background:#14283b;color:#fff;box-shadow:0 2px 8px #172b4240}.top-inner{max-width:1150px;margin:auto;padding:.6rem .9rem;display:flex;flex-wrap:wrap;align-items:center;gap:.45rem}.top strong{margin-right:.8rem}.top button{border:1px solid #9db3c7;color:#fff;background:transparent;border-radius:.5rem;padding:.45rem .72rem}.top button[aria-current=true],.top button:hover{background:#fff;color:#14283b}.top .print-button{border-color:#a5d4db}.skip{position:absolute;left:-10000px}.skip:focus{left:.5rem;top:.5rem;z-index:9;background:white;padding:.5rem}
+main{max-width:1120px;margin:1rem auto 3rem}.view-section{display:none}.view-section>.screen-head{padding:1.2rem 1.5rem;color:#fff;background:#174a68;border-radius:1rem 1rem 0 0}.view-section>.screen-head h1{margin:0;font-size:1.8rem}.view-section>.screen-head p{margin:.25rem 0 0}body[data-view=student] #student,body[data-view=simulations] #simulations,body[data-view=teacher] #teacher,body[data-view=solutions] #solutions,body[data-view=hints] #hints,body[data-view=sources] #sources{display:block}
+.panel,.sheet,.sim-card{background:#fff;padding:1.35rem 1.55rem;margin:0 0 1rem;border:1px solid #d6e0e8;border-radius:.8rem;box-shadow:0 2px 8px #19314a12}.sheet{margin-top:1rem}.sheet-head{border-bottom:3px solid var(--blue);padding-bottom:.55rem;margin-bottom:.8rem;display:flex;justify-content:space-between;align-items:flex-end;gap:1rem}.sheet-head p,.sheet-head h2{margin:0}.sheet-head .label{color:#405368;font-size:.89rem}.sheet-head h2{font-size:1.48rem}.sheet-head .name{white-space:nowrap;font-size:.9rem}.kicker{font-weight:750;letter-spacing:.03em;color:#076383}.lead{font-size:1.1rem}.note{border-left:4px solid var(--blue);background:var(--blue2);padding:.58rem .8rem;margin:.65rem 0}.warning{border-left-color:#ae5531;background:#fff5e8}.green-note{border-left-color:var(--green);background:#edf8f3}.muted{color:var(--sub)}.small{font-size:.9rem}h2,h3,h4{line-height:1.2}h3{font-size:1.14rem;margin:.85rem 0 .4rem}h4{margin:.7rem 0 .3rem}p{margin:.42rem 0 .7rem}ol,ul{padding-left:1.35rem;margin:.4rem 0 .75rem}li{margin:.16rem 0}.task{border-left:4px solid #aec8d7;padding:.18rem .8rem;margin:.55rem 0}.task b{color:#12364e}.step{display:inline-grid;place-items:center;min-width:1.45rem;height:1.45rem;border-radius:50%;background:var(--blue);color:#fff;font-weight:700;margin-right:.35rem}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem}.tile{border:1px solid var(--line);background:#f8fbfd;border-radius:.55rem;padding:.65rem .75rem}.tile p:last-child{margin-bottom:0}.equation{padding:.4rem .6rem;background:#eef5f8;border-radius:.4rem;font-weight:700;overflow-wrap:anywhere}.answer{margin:.3rem 0 .65rem;border:1px solid #c0ccd5;border-radius:.4rem;background:repeating-linear-gradient(to bottom,#fff 0,#fff 28px,#aab6c1 29px,#fff 30px);min-height:62px}.answer.short{min-height:37px}.answer.medium{min-height:82px}.answer.tall{min-height:112px}.write-line{border-bottom:1px solid #718393;display:inline-block;min-width:6em;height:1.2em}.hintbox{margin:.6rem 0;border:1px solid #abc4d3;border-radius:.5rem;background:#f2f8fc}.hintbox summary{cursor:pointer;font-weight:700;padding:.45rem .7rem}.hintbox>div{padding:0 .7rem .55rem}.hintbox p{margin:.25rem 0}.check{margin-right:.3em;white-space:nowrap}table{border-collapse:collapse;width:100%;margin:.5rem 0 .75rem;table-layout:fixed}th,td{border:1px solid #a7b7c4;text-align:left;vertical-align:top;padding:.38rem .47rem;overflow-wrap:anywhere}th{background:#eaf1f5}tbody tr:nth-child(even){background:#f9fbfd}.data-table{max-width:730px}.data-table th:nth-child(1){width:26%}.data-table th:nth-child(2),.data-table th:nth-child(3){width:37%}.mini-table th,.mini-table td{padding:.32rem .38rem}.svg-illustration{display:block;width:100%;height:auto;max-height:225px;border:1px solid #c2d0d9;border-radius:.45rem;background:#fff}.plot-print{display:block;width:100%;height:auto;max-height:340px;background:#fff;border:1px solid #b8c6d0}.plot-note{margin:.25rem 0;font-size:.91rem}.lab-link{font-weight:700}.station-label{display:inline-block;border-radius:1rem;background:#e3f2f8;padding:.16rem .6rem;margin-bottom:.3rem;color:#074e6a;font-weight:700}.mini-flow{display:flex;gap:.35rem;flex-wrap:wrap;align-items:center}.mini-flow span{background:#e9f4f9;padding:.32rem .5rem;border-radius:.4rem}.form-grid{display:grid;grid-template-columns:9.8rem 1fr;gap:.35rem .65rem;align-items:center}.form-grid label{font-weight:700}.form-grid .blank{min-height:1.7em;border-bottom:1px solid #718393}.glossary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem}.glossary div{padding:.55rem .7rem;border:1px solid #cbd7e0;border-radius:.4rem}.glossary dt{font-weight:750}.glossary dd{margin:0}.plan-table th:nth-child(1){width:12%}.plan-table th:nth-child(2){width:18%}.plan-table th:nth-child(3){width:35%}.plan-table th:nth-child(4){width:35%}.small-table{font-size:.93rem}
+.sim-card h2{margin:.1rem 0 .4rem}.sim-card p{max-width:82ch}.controls{display:flex;flex-wrap:wrap;gap:.65rem 1.1rem;align-items:end;margin:.8rem 0}.controls label{display:grid;gap:.22rem;font-weight:700;min-width:180px;flex:1}.controls input[type=range]{width:100%;min-height:35px}.controls select{width:100%;padding:.44rem;border-radius:.4rem;border:1px solid #7d95a7;background:white;min-height:42px}.sim-button{padding:.45rem .8rem;border:0;border-radius:.45rem;color:white;background:var(--blue)}.sim-button.secondary{background:#4b6478}.sim-visual{width:100%;max-width:760px;height:auto;display:block;border:1px solid #b7c7d1;background:white}.readout{border-left:4px solid var(--green);background:#f0f8f5;padding:.55rem .75rem;margin:.7rem 0;font-weight:600}.timelinebar{height:25px;max-width:760px;display:flex;position:relative;border:1px solid #8196a4;border-radius:4px;overflow:hidden}.timelinebar .acoustic{background:#8fd1e2}.timelinebar .electronic{background:#f2b783}.timelinebar .cursor{position:absolute;width:3px;background:#132839;height:100%;left:0;top:0}.legend{display:flex;flex-wrap:wrap;gap:.3rem 1rem;font-size:.9rem;margin:.4rem 0}.legend span:before{content:"";display:inline-block;width:.8em;height:.8em;margin-right:.35em;border-radius:2px;background:var(--blue)}.legend .b:before{background:var(--red)}.legend .offset:before{background:#ebad79}.barcompare{max-width:760px}.barrow{display:grid;grid-template-columns:11rem 1fr 5rem;gap:.5rem;align-items:center;margin:.35rem 0}.bartrack{height:1.3rem;border:1px solid #a5b6c1;border-radius:3px;background:#f4f8fa}.barfill{height:100%;background:var(--blue)}.barfill.bad{background:var(--red)}.screen-only{display:block}.print-only{display:none}
+@media(max-width:700px){body{font-size:15px}.top-inner{gap:.3rem}.top button{font-size:.85rem;min-height:38px;padding:.35rem .48rem}.grid2,.glossary{grid-template-columns:1fr}.panel,.sheet,.sim-card{padding:.95rem;margin-left:.45rem;margin-right:.45rem}.sheet-head{display:block}.sheet-head .name{margin-top:.3rem}.barrow{grid-template-columns:8rem 1fr 3.6rem;font-size:.87rem}.plan-table{font-size:.84rem}.plot-print{max-height:none}}
+@page{size:A4;margin:13mm 14mm 15mm}
+@media print{
+ html,body{background:#fff;color:#111;font:11pt/1.35 Arial,Helvetica,sans-serif;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+ .top,.screen-head,.screen-only,.hintbox,.lab-link,.print-controls{display:none!important}main{max-width:none;margin:0}.view-section,.panel,.sheet,.sim-card{display:none!important;box-shadow:none!important;border:0!important;border-radius:0!important;margin:0!important;padding:0!important}
+ body[data-print=student] #student,body[data-print=teacher] #teacher,body[data-print=solutions] #solutions,body[data-print=hints] #hints,body[data-print=sources] #sources{display:block!important}
+ body[data-print=student] #student .sheet,body[data-print=teacher] #teacher .panel,body[data-print=solutions] #solutions .panel,body[data-print=hints] #hints .panel,body[data-print=sources] #sources .panel{display:block!important}
+ .sheet,.print-page{break-before:page;page-break-before:always}.sheet:first-of-type,.print-page:first-of-type{break-before:auto;page-break-before:auto}
+ .sheet::before{content:"13GT · Physik · Woche 3 | Arbeitsblatt";display:block;font-size:9pt;color:#34485a;margin-bottom:1.5mm}
+ #teacher .panel::before{content:"13GT · Physik · Woche 3 | Lehrkraftfassung";display:block;font-size:9pt;color:#34485a;margin-bottom:1.5mm}
+ #solutions .panel::before{content:"13GT · Physik · Woche 3 | Musterlösungen";display:block;font-size:9pt;color:#34485a;margin-bottom:1.5mm}
+ #hints .panel::before{content:"13GT · Physik · Woche 3 | Hilfenblatt";display:block;font-size:9pt;color:#34485a;margin-bottom:1.5mm}
+ .sheet-head{margin-bottom:3mm;padding-bottom:2mm}.sheet-head h2{font-size:16pt}.sheet-head .name{font-size:9pt}h3{font-size:12pt;margin:3mm 0 1.5mm}h4{font-size:11pt}p{margin:1.5mm 0 2.3mm}.lead{font-size:11pt}.small{font-size:9.5pt}.task{margin:2mm 0;padding:.5mm 2.5mm}.note{margin:2mm 0;padding:2mm 2.5mm}.tile{padding:2mm 2.5mm}.grid2{gap:3mm}.equation{padding:1.5mm 2mm}.answer{min-height:16mm;margin:1mm 0 3mm;background:repeating-linear-gradient(to bottom,#fff 0,#fff 7mm,#aab6c1 7.1mm,#fff 7.3mm)}.answer.short{min-height:10mm}.answer.medium{min-height:22mm}.answer.tall{min-height:30mm}
+ table{margin:2mm 0 3mm;table-layout:fixed}th,td{padding:1.25mm 1.7mm;font-size:10.4pt}.data-table th,.data-table td{padding:1mm 1.6mm}.svg-illustration{max-height:44mm}.plot-print{height:85mm;max-height:85mm;object-fit:contain}.plot-note{font-size:9.5pt}.station-label{padding:.6mm 2mm}.mini-flow span{padding:1mm 1.5mm}.form-grid{grid-template-columns:35mm 1fr;gap:1.3mm 3mm}.print-only{display:block}.no-break{break-inside:avoid;page-break-inside:avoid}.plan-table th,.plan-table td{font-size:9.4pt;padding:1.3mm 1.5mm}.small-table{font-size:9.5pt}.glossary{gap:2mm}.glossary div{padding:1.5mm 2mm}
+ #teacher .panel:not(:first-of-type),#solutions .panel:not(:first-of-type),#hints .panel:not(:first-of-type){break-before:page;page-break-before:always}
+}
+
+/* Fachgrafiken und digitales Produkt im Raster der Vorlage */
+.spectral-choice{height:82px;position:relative;border:1px solid #829baa;border-radius:.45rem;background:#fff;margin:.5rem 0;overflow:hidden}
+.spectral-choice.band{border-top:14px solid #607e93;border-bottom:14px solid #607e93;background:linear-gradient(to right,#6941a8 0%,#4d43b6 15%,#1c74bd 30%,#1597b3 43%,#459b6a 53%,#ccbb42 63%,#df8733 75%,#c83b3c 90%,#a72c38 100%)}
+.spectral-choice .line{position:absolute;top:7px;bottom:7px;border-left:4px solid #14283b}
+.spectral-choice .line.one{left:22%}.spectral-choice .line.two{left:49%}.spectral-choice .line.three{left:76%}
+.spectral-choice .caption{position:absolute;left:.5rem;bottom:.2rem;font-size:.86rem;background:#fff;padding:0 .25rem}
+.h-line-violet{stroke:#7043ac}.h-line-cyan{stroke:#0788a6}.h-line-red{stroke:#c4353e}
+.wavelength-strip{stroke:#203748;stroke-width:.8}.wavelength-note{font-size:.88rem;color:#34485a;margin:.2rem 0 .55rem}
+.line-legend span::before{width:1.45em;height:0;border-top:3px solid #14283b;background:none!important;vertical-align:middle}.line-legend .b::before{border-top-style:dashed}
+.spectral-table{max-width:850px}.spectral-table th:nth-child(1){width:23%}.spectral-table th:nth-child(2){width:25%}.spectral-table th:nth-child(3){width:52%}
+.level-mini{height:170px;position:relative;border-left:2px solid #31495c;margin:.4rem 1rem .7rem 3rem;background:#fff}
+.level-mini .baseline{position:absolute;left:0;right:0;top:9%;border-top:2px dashed #738596}
+.level-mini .level{position:absolute;left:4%;right:0;border-top:2px solid #075f85}
+.level-mini .n2{top:82%}.level-mini .n3{top:41.5%}.level-mini .n4{top:27%}.level-mini .n5{top:20.7%}
+.level-mini span{position:absolute;left:-2.7rem;top:-.75rem;font-size:.8rem;font-weight:700}
+.level-mini .zero{position:absolute;right:.2rem;top:0;font-size:.8rem}
+.ipad-editor textarea,.ipad-editor input,.ipad-editor select{width:100%;padding:.45rem;border:1px solid #7d95a7;border-radius:.4rem;background:#fff;color:var(--ink)}
+.ipad-editor textarea{min-height:4.2rem;resize:vertical}.ipad-editor label{display:grid;gap:.2rem;font-weight:700}.ipad-editor .grid2,.ipad-editor .grid3{margin:.65rem 0}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.7rem}
+.digital-page .grid3{grid-template-columns:repeat(2,minmax(0,1fr));gap:.4rem}.digital-page .grid3>.tile:first-child{grid-column:1/-1}.digital-page svg{display:block;width:100%;height:auto;border:1px solid #b8c6d0;border-radius:.4rem;background:#fff;margin:.4rem 0}.digital-page #pSpectrum{max-height:250px}
+.digital-page .tile{overflow-wrap:anywhere}.digital-page .typed{white-space:pre-wrap}.digital-page .tile p{font-size:.95rem}
+.spectrum-legend{font-size:.88rem;color:var(--sub);margin:.2rem 0}
+.sim-card .sim-visual{max-width:850px}.answer.medium{min-height:90px}
+@media(max-width:700px){.grid3{grid-template-columns:1fr}.level-mini{height:160px}.digital-page .grid3{grid-template-columns:1fr}}
+@media print{
+ .sheet::before{content:"13GT · Physik · Woche 3 | Arbeitsblatt"}
+ #teacher .panel::before{content:"13GT · Physik · Woche 3 | Lehrkraftfassung"}
+ #solutions .panel::before{content:"13GT · Physik · Woche 3 | Musterlösungen"}
+ #hints .panel::before{content:"13GT · Physik · Woche 3 | Hilfenblatt"}
+ .spectral-choice.band{background:#fff!important;border-top:7px solid #14283b;border-bottom:7px solid #14283b}
+ .spectral-choice .line{background:transparent!important;border-left:4px solid #14283b}
+ .h-line-violet,.h-line-cyan,.h-line-red{stroke:#14283b!important}
+ .wavelength-strip{fill:#e8ebed!important;stroke:#14283b!important}
+ #pSpectrumLines line{stroke:#14283b!important}
+ .level-mini{height:42mm}.level-mini .n2{top:82%}.level-mini .n3{top:41.5%}.level-mini .n4{top:27%}.level-mini .n5{top:20.7%}
+ .grid3{grid-template-columns:repeat(3,minmax(0,1fr));gap:2mm}
+ body[data-print=digital] #student{display:block!important}
+ body[data-print=digital] #student .digital-page{display:block!important;break-before:auto!important;page-break-before:auto!important}
+ body[data-print=digital] #student .sheet{display:none!important}
+ body[data-print=digital] #student .digital-page .grid3{grid-template-columns:repeat(2,minmax(0,1fr));gap:2mm}
+ body[data-print=digital] #student .digital-page .grid3>.tile:first-child{grid-column:1/-1}
+ body[data-print=digital] #student .digital-page .tile{break-inside:avoid;page-break-inside:avoid}
+ body[data-print=digital] #student .digital-page svg{max-height:52mm}
+}
+
+</style>
+</head>
+<body data-view="student" data-print="student">
+<a class="skip" href="#student">Zum Inhalt springen</a>
+<nav class="top screen-only" aria-label="Ansichten und Druckfassungen"><div class="top-inner">
+ <strong>13GT · Physik · Woche 3</strong>
+ <button type="button" data-show="student" aria-current="true">Arbeitsblatt</button>
+ <button type="button" data-show="simulations">Simulationen</button>
+ <button type="button" data-show="solutions">Musterlösungen</button>
+ <button type="button" data-show="hints">Hilfen</button>
+ <button type="button" data-show="teacher">Lehrkraft</button>
+ <button type="button" data-show="sources">Glossar &amp; Quellen</button>
+ <button type="button" class="print-button" data-print-part="student">Druck: Stationen</button>
+ <button type="button" class="print-button" data-print-part="hints">Druck: Hilfen</button>
+ <button type="button" class="print-button" data-print-part="solutions">Druck: Lösungen</button>
+ <button type="button" class="print-button" data-print-part="teacher">Druck: Lehrkraft</button>
+</div></nav>
+<main id="main">
+<section id="teacher" class="view-section" aria-labelledby="teacher-title">
+ <div class="screen-head"><h1 id="teacher-title">Lehrkraftfassung</h1><p>Zusammenhängende Doppelstunde · 90 Minuten · Lichtcode-Panel H-03</p></div>
+ <article class="panel print-page">
+  <h2>Einordnung und Lernziel</h2>
+  <p><b>Lerngruppe:</b> 13GT, Gestaltungstechnische Assistenz/AHR, Physik in 13.1. Thomson und Rutherford sind bisher verständlich; Spektren werden zu Beginn neu veranschaulicht. Beim Rechnen mit Potenzen, negativen Zahlen und Einheiten benötigt die Gruppe starke Hilfen. Beamer, iPads, Taschenrechner und Schwarzweißausdrucke stehen bereit. Zwei Stunden à 45 Minuten folgen direkt aufeinander.</p>
+  <p><b>Anschluss im Halbjahr:</b> Woche 3 führt vom offenen Problem des Rutherford-Modells über Bohrs Postulate zu berechneten Spektrallinien, Emission und Absorption. Die separate Übungsstunde bleibt außerhalb dieser Planung. Fluoreszenz, Phosphoreszenz und Lumineszenz sind erst Folgestoff der Woche 4.</p>
+  <p><b>Erfundenes Szenario:</b> Für ein Wissenschaftsfoyer soll eine Wasserstoff-Lichtinstallation mit Erklärungspanel freigegeben werden. Entwurf A zeigt ein durchgehendes Farbspektrum, B drei dekorativ gleichabständige Striche. Drei ausgewählte starke H-I-Luftlinien aus NIST-Daten liegen bei 434,0, 486,1 und 656,3 nm. Die Lernenden ersetzen beide Entwürfe durch eine fachlich begründete Darstellung. Die drei Linien sind eine <b>Auswahl</b>; weitere H-Linien existieren, etwa um 410,2 nm.</p>
+  <p><b>Leitfrage und sichtbares Ergebnis:</b> Warum liegen diese drei ausgewählten Linien an bestimmten, ungleichen Stellen und was darf das historische Bohr-Modell darüber aussagen? Ergebnis ist das Lichtcode-Panel H-03 mit linearer nm-Skala, Energieniveauschema, Rechnung, Deutung, Grenzen und einer begründeten Freigabeentscheidung. Papier und ein iPad-Editor in derselben Datei sind gleichwertige Wege.</p>
+  <div class="note"><b>Lernziele:</b> Spektrum als nach Wellenlänge geordnetes Licht deuten; Messbefund, Rutherford-Frage und Bohr-Postulat unterscheiden; Eₙ = −13,6 eV/n² für n = 2 bis 5 einsetzen; bei 3, 4 und 5 → 2 die positive Photonenergie und λ ≈ 1240/ΔE nm bestimmen; Emission und Absorption unterscheiden; Messung, Modell und Modellgrenze im Panel getrennt kennzeichnen.</div>
+  <p><b>Fachliche Grenze:</b> Die Formel mit hc ≈ 1240 eV·nm berechnet vereinfachte Vakuumwellenlängen, das Datendossier enthält Luftwellenlängen. Die Differenzen um 0,17 nm sind kein isolierter Messfehler und nicht allein durch Dezimalrundung erklärt. Das Bohr-Modell nutzt historische stationäre Zustände, keine beobachteten Kreisbahnen; Feinstruktur, Intensitäten, komplexe Atome und Lumineszenz bleiben außerhalb der Doppelstunde.</p>
+ </article>
+ <article class="panel print-page">
+  <h2>Verlaufsplan · 90 Minuten</h2>
+  <table class="plan-table"><thead><tr><th>Zeit</th><th>Phase / Material</th><th>Lehrkraft</th><th>Lernende / Ergebnissicherung</th></tr></thead><tbody>
+   <tr><td>Std. 1<br>0–8</td><td>Einstieg<br>Quelle–Gitter–Schirm<br>EA → Plenum</td><td>Zeigt das Wegbild und A/B; fragt erst nach einer Vermutung und erklärt dann „Spektrum“ und „Linie“.</td><td>Unterscheiden ein durchgehendes Band von einzelnen hellen Bereichen; formulieren die Leitfrage.</td></tr>
+   <tr><td>8–24</td><td>Station 1A<br>Datendossier, Skalenblatt<br>EA → Partnerarbeit</td><td>Demonstriert die lineare 400–700-nm-Achse am Beispiel 434,0 nm. M1 gibt nur drei ausgewählte Werte vor.</td><td>Trennen Beobachtung von Modellannahme; tragen zwei weitere Linien ein und vergleichen Abstände. Zwischenergebnis: B ist nicht maßstäblich.</td></tr>
+   <tr><td>24–43</td><td>Station 1B<br>Rechenblatt, Rechner<br>Plenum → PA</td><td>Denkt n = 2 und ein fremdes Vorzeichenbeispiel laut vor, lässt die übrigen Niveaus und 3 → 2 bearbeiten.</td><td>Ergänzen vorbereitete Tabelle, prüfen Einheiten eV·nm/eV, markieren einen Abwärtspfeil. Zwischenergebnis: 1,889 eV und 656,5 nm.</td></tr>
+   <tr><td>43–45</td><td>Zwischensicherung<br>Plenum</td><td>Fragt: Welche Größe ist negativ, welche muss positiv sein? Sichert Vakuumrechnung gegen Luftmessung.</td><td>Berichtigen eigene Rechenzeile und benennen den roten Messwert 656,3 nm.</td></tr>
+   <tr><td>Std. 2<br>0–3</td><td>Rückblick<br>Think–Pair</td><td>Fragt: Größere Photonenergie – kürzere oder längere Wellenlänge?</td><td>Nutzen E = hc/λ zur Trendvorhersage.</td></tr>
+   <tr><td>3–20</td><td>Station 2<br>Rechner, Labor 2<br>EA → PA</td><td>Verweist auf die ausgefüllte erste Zeile; stoppt frühes Runden und fragt nach dem Medienbezug.</td><td>Berechnen 4 → 2 und 5 → 2, vergleichen drei Luftwerte und erklären ungleiche Abstände.</td></tr>
+   <tr><td>20–27</td><td>Modellprüfung<br>Labor 1/2 oder Blatt<br>PA</td><td>Lässt Vorhersage vor jedem Modellblick notieren; nutzt den Zahlenvergleich bei Projektion.</td><td>Prüfen Pfeilrichtung, Muster und ±0,2-nm-Vergleich; notieren eine Modellgrenze.</td></tr>
+   <tr><td>27–35</td><td>Station 3<br>Prozesskarte, Labor 3<br>PA</td><td>Fragt nach Anfangs- und Endenergie sowie passender Photonenergie.</td><td>Ordnen Emission/Absorption zu, verwerfen 2,00 eV im idealisierten n = 2-Fall und korrigieren drei Überaussagen.</td></tr>
+   <tr><td>35–43</td><td>Station 4<br>Panelblatt oder iPad<br>EA → Tandem</td><td>Fordert Messskala, drei Pfeile, Erklärsatz und Grenze; sorgt für lesbare PDF-Abgabe.</td><td>Gestalten H-03 und vergleichen Kriterien mit einer Partnerin oder einem Partner.</td></tr>
+   <tr><td>43–45</td><td>Abschluss<br>Plenum</td><td>Sichert „stützt“, nicht „beweist“; öffnet die Lösungen für den Selbstvergleich.</td><td>Berichtigen einen Satz und begründen die Änderung.</td></tr>
+  </tbody></table>
+  <p class="small"><b>Material und Druck:</b> sechs Stationsseiten wie in der Vorlage, ein getrenntes Hilfenblatt, getrennte Lehrkraft- und Lösungsansicht, optional iPad/Beamer und Taschenrechner. Ohne Gerät genügen Skalenblatt, Energiegerüst und Zahlentabelle. Für das digitale Handlungsprodukt gibt es eine eigene Panel-PDF-Drucktaste.</p>
+ </article>
+ <article class="panel print-page">
+  <h2>Differenzierung und Reaktion auf Fehler</h2>
+  <table class="small-table"><thead><tr><th>Station</th><th>Aufklappbare Hilfe vor Ort</th><th>Typischer Fehler → Reaktion</th></tr></thead><tbody>
+   <tr><td>1A</td><td>„Was zeigt ein heller Strich?“ und lineare Skala mit Beispielposition 434,0 nm; Basisweg: erste Linie ist vorgegeben.</td><td>Jede Farbe wird als H-Linie gedeutet → Messdatensatz und leeres Intervall vergleichen; weitere H-Linien außerhalb der Auswahl erwähnen.</td></tr>
+   <tr><td>1B</td><td>n²-Schrittfolge, n = 2 als Beispiel, E₃ mit begonnener Einsetzung; fremdes Vorzeichenbeispiel und Einheitentest.</td><td>−1,511 − (−3,400) wird negativ → beide Klammern vor der Betragsbildung sprechen und hinschreiben.</td></tr>
+   <tr><td>2</td><td>Ausgefüllte erste Übergangszeile; Lückenformel für ΔE und λ; Mess-/Modellspalten getrennt.</td><td>Größere Energie ergibt längere Welle → bei konstantem hc den Bruch 1240/ΔE vergleichen.</td></tr>
+   <tr><td>3</td><td>Spalten „Anfang – Ende – Energiebilanz“, Satzstarter und die erlaubten n = 2-Aufwärtssprünge.</td><td>Emission zeigt aufwärts oder 2,00 eV wird beliebig aufgenommen → Energie vor/nach dem Übergang getrennt prüfen.</td></tr>
+   <tr><td>4</td><td>Drei Panelbereiche, Satzstarter und Checkliste; iPad-Eingaben übernehmen nur eigene Zahlen.</td><td>Farbwirkung ersetzt Zahlen und Status → durchgezogene Messstriche, gestrichelte Modellpfeile und Zahlenlabels verlangen.</td></tr>
+  </tbody></table>
+  <p><b>Basisweg:</b> Ein teilweise ausgefülltes, für alle sichtbares Rechenraster verhindert Blockaden; zusätzliche Denk- und Rechenhilfen sind direkt an der Aufgabe aufklappbar und separat druckbar. Partnervergleich erfolgt erst nach eigenem Ansatz. <b>Erweiterung:</b> 6 → 2 berechnen, mit 410,2 nm Luft vergleichen und ungleiche Abstände begründen.</p>
+  <p><b>Gemeinsame Sicherung:</b> Messbefund (ausgewählte helle Linien) → offenes Rutherford-Problem → Bohr-Postulat diskreter Zustände → positive Photonenergie ΔE → Modellwellenlänge → Vergleich mit Luftdaten → begrenzte Aussage. Diese Kette kann als kurzes Tafelbild über beide Stunden stehen bleiben.</p>
+  <p><b>Vier lokale Modelle:</b> Der Entwurfsvergleich baut die Vorstellung eines Spektrums auf; Labor 1 zeigt eine lineare Energieachse und einen Übergang; Labor 2 hält Mess- und Modellwerte auf identischer nm-Skala getrennt; Labor 3 prüft Photonenergie und Anfangszustand. Alle Modelle sind idealisiert; auf den Stationsblättern stehen dieselben Auswertungsaufträge als Druckalternative. Die Musterlösungen bleiben jederzeit offen.</p>
+ </article>
+</section>
+<section id="student" class="view-section" aria-labelledby="student-title">
+ <div class="screen-head"><h1 id="student-title">Arbeitsblatt: vier Stationen</h1><p>Erst selbst vermuten, zeichnen und rechnen. Aufklappbare Hilfen, Simulationen und Musterlösungen sind jederzeit erreichbar.</p></div>
+
+ <article class="sheet" id="station1a">
+  <header class="sheet-head"><div><span class="station-label">Station 1 · Teil A · ca. 16 Minuten mit Skalenblatt</span><h2>Was zeigt ein Wasserstoffspektrum?</h2></div><p class="name">Name: __________________</p></header>
+  <p class="lead"><b>Fiktiver Auftrag H-03:</b> Ein Wissenschaftsfoyer möchte Wasserstofflicht erklären. Entwurf A zeigt einen durchgehenden „Wasserstoff-Regenbogen“, Entwurf B drei gleich weit verteilte Linien. Ein Gestaltungsteam soll ein besseres Lichtcode-Panel vorlegen.</p>
+  <p><b>Leitfrage:</b> Warum sind einzelne Linien zu sehen und wo müssen sie auf einer Wellenlängenskala stehen? Am Ende gestaltest du eine Messskala, ein Energieniveauschema und einen kurzen Erklärungstext mit Modellgrenze.</p>
+  <svg class="svg-illustration" viewBox="0 0 720 170" role="img" aria-labelledby="intro-title intro-desc">
+   <title id="intro-title">Von der leuchtenden Wasserstoffquelle zu ausgewählten Spektrallinien</title><desc id="intro-desc">Links eine leuchtende Quelle mit Wasserstoff, in der Mitte ein Gitter, rechts ein Detektor mit einzelnen hellen Strichen. Das Bild ist schematisch; die genauen Wellenlängen stehen in der Tabelle.</desc>
+   <rect x="25" y="35" width="122" height="90" rx="8" fill="#d4e9f3" stroke="#075f85" stroke-width="3"/><text x="86" y="74" text-anchor="middle" font-size="17">H-Quelle</text><text x="86" y="97" text-anchor="middle" font-size="13">leuchtendes Gas</text>
+   <path d="M159 80 H270" stroke="#075f85" stroke-width="4"/><path d="M270 80 l-12 -7 v14 z" fill="#075f85"/>
+   <rect x="290" y="29" width="52" height="100" fill="#e8f4fa" stroke="#075f85" stroke-width="2"/><path d="M299 35 v89 M309 35 v89 M319 35 v89 M329 35 v89" stroke="#075f85" stroke-width="2"/><text x="317" y="154" text-anchor="middle" font-size="14">Gitter</text>
+   <path d="M355 80 H456" stroke="#075f85" stroke-width="4"/><path d="M456 80 l-12 -7 v14 z" fill="#075f85"/>
+   <rect x="475" y="29" width="215" height="100" fill="#fff" stroke="#506276" stroke-width="2"/><path class="h-line-violet" d="M500 40 v78" stroke-width="5"/><path class="h-line-cyan" d="M547 40 v78" stroke-width="5"/><path class="h-line-red" d="M661 40 v78" stroke-width="5"/><text x="583" y="154" text-anchor="middle" font-size="14">Schirm / Detektor</text>
+  </svg>
+  <p class="small"><b>Bildhinweis:</b> Das Gitter ordnet Licht nach Wellenlängen. Eine helle <b>Spektrallinie</b> steht für ausgesandtes Licht in einem engen Wellenlängenbereich. Die Striche im Schema sind nicht maßstäblich; weitere H-Linien sind hier nicht eingezeichnet.</p>
+  <div class="grid2"><div class="tile"><b>Fehlentwurf A · durchgehend</b><div class="spectral-choice band" role="img" aria-label="Fehlerhafter Entwurf A: ein durchgehendes buntes Band"><span class="caption">jede Farbe als Wasserstofflicht</span></div></div><div class="tile"><b>Fehlentwurf B · Designraster</b><div class="spectral-choice" role="img" aria-label="Fehlerhafter Entwurf B: drei gleichabständige Linien"><i class="line one"></i><i class="line two"></i><i class="line three"></i><span class="caption">drei Linien, gleiche Abstände</span></div></div></div>
+  <div class="task"><p><span class="step">1</span><b>Vermute:</b> Welcher Entwurf passt eher zum Bild? Was ist bei beiden Entwürfen noch zu prüfen? Schreibe zunächst ohne Rechnung.</p><div class="answer short" aria-label="Platz für erste Vermutung"></div></div>
+  <details class="hintbox"><summary>Hilfe zur ersten Vermutung: Was wird gesehen?</summary><div><p>Vergleiche zuerst nur die Form: ein durchgehendes Band oder einzelne helle Striche? Ob Striche an den <em>richtigen Stellen</em> liegen, prüfst du erst mit den Zahlen in M1 und auf dem Skalenblatt.</p></div></details>
+  <p><b>Datendossier M1:</b> Drei <em>ausgewählte</em> starke H-I-Linien (H I = neutraler Wasserstoff) aus NIST-Daten. Eine Wellenlänge λ wird hier in Nanometern (nm) angegeben; 1 nm = 10⁻⁹ m. Die Luftwerte sind didaktisch auf 0,1 nm gerundet.</p>
+  <table class="spectral-table"><thead><tr><th>ausgewählter Messpeak</th><th>λ in Luft</th><th>ungefähre Farbbezeichnung</th></tr></thead><tbody><tr><td>1</td><td>434,0 nm</td><td>blauviolett</td></tr><tr><td>2</td><td>486,1 nm</td><td>blaugrün</td></tr><tr><td>3</td><td>656,3 nm</td><td>rot</td></tr></tbody></table>
+  <p class="small">Diese drei Werte sind <b>nicht das ganze Wasserstoffspektrum</b>; eine weitere Linie liegt beispielsweise bei etwa 410,2 nm. Zwischen den ausgewählten Maxima steht kein durchgehendes Emissionsband. Linienbreite und Helligkeit werden hier nicht ausgewertet.</p>
+ </article>
+
+ <article class="sheet" id="station1a-plot">
+  <header class="sheet-head"><div><span class="station-label">Station 1 · Teil A · Skalenblatt</span><h2>Drei ausgewählte Messlinien maßstäblich eintragen</h2></div><p class="name">Name: __________________</p></header>
+  <p><span class="step">2</span><b>Trage ein:</b> Die waagerechte Achse läuft linear von 400 bis 700 nm. 434,0 nm ist als Basisbeispiel markiert. Ergänze 486,1 und 656,3 nm mit unterschiedlich beschrifteten Strichen. Die Schirmzeichnung auf Blatt 1 war nicht maßstäblich.</p>
+  <svg class="plot-print" viewBox="0 0 660 350" role="img" aria-labelledby="scale-title scale-desc">
+   <title id="scale-title">Lineare Wellenlängenskala für drei ausgewählte H-I-Messlinien</title><desc id="scale-desc">Waagerechte Skala von 400 bis 700 nm mit einem Gitter alle 50 nm. Die Beispielposition 434,0 nm ist bereits eingezeichnet; die beiden anderen Messlinien tragen Lernende ein. Der schmale Farbverlauf unter der Achse dient nur zur Farborientierung und stellt kein Emissionsband dar.</desc>
+   <defs><linearGradient id="gradientPlot" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#6941a8"/><stop offset="11.3%" stop-color="#7043ac"/><stop offset="28.7%" stop-color="#0788a6"/><stop offset="43.3%" stop-color="#459b6a"/><stop offset="60%" stop-color="#ccbb42"/><stop offset="70%" stop-color="#df8733"/><stop offset="85.4%" stop-color="#c4353e"/><stop offset="100%" stop-color="#a72c38"/></linearGradient></defs>
+   <rect x="75" y="30" width="500" height="240" fill="#fff" stroke="#8399aa"/>
+   <path d="M75 30 V270 M158.33 30 V270 M241.67 30 V270 M325 30 V270 M408.33 30 V270 M491.67 30 V270 M575 30 V270" stroke="#c7d2db" stroke-width="1"/>
+   <path d="M75 270 H575" stroke="#233d51" stroke-width="2"/>
+   <path class="h-line-violet" d="M131.67 78 V258" stroke-width="4"/><text x="115" y="65" font-size="15" font-weight="bold">434,0</text>
+   <g font-size="14" fill="#14283b" text-anchor="middle"><text x="75" y="296">400</text><text x="158.33" y="296">450</text><text x="241.67" y="296">500</text><text x="325" y="296">550</text><text x="408.33" y="296">600</text><text x="491.67" y="296">650</text><text x="575" y="296">700</text><text x="325" y="338" font-size="16">Wellenlänge λ in nm →</text></g>
+   <rect class="wavelength-strip" x="75" y="305" width="500" height="10" fill="url(#gradientPlot)"/>
+  </svg>
+  <p class="plot-note">Der vorgedruckte Strich ist ein ausgewählter <b>Luftmesswert</b>. Das schmale Farbband unter der Achse dient nur zur <b>Orientierung</b>, es ist kein durchgehendes Wasserstoffspektrum. Eigene Striche und Zahlenlabels sollen auch im Schwarzweißdruck lesbar sein.</p>
+  <div class="task"><p><b>Beobachte und begründe:</b> Abstand 434,0 → 486,1 nm = ______ nm; Abstand 486,1 → 656,3 nm = ______ nm. Sind die Striche gleichabständig? Welche Teile von A und B müssen verworfen werden?</p><div class="answer medium"></div></div>
+  <details class="hintbox"><summary>Hilfe zu Station 1A: lineare Skala und Beobachtung</summary><div><p>Zwischen 400 und 700 liegen 300 nm; jedes große Kästchen steht für 50 nm. 486,1 nm liegt etwas links von 500; 656,3 nm etwas rechts von 650. Rechne die beiden Differenzen getrennt aus. Einzelne Striche ≠ durchgehendes Band.</p></div></details>
+  <p class="screen-only">Danach im <a href="#way-model" data-link-view="simulations">Vorstellungsmodell</a> A, B und die Messauswahl gegenüberstellen.</p>
+ </article>
+
+ <article class="sheet" id="station1b">
+  <header class="sheet-head"><div><span class="station-label">Station 1 · Teil B · ca. 19 Minuten</span><h2>Bohrs Energieniveaus und die rote Linie</h2></div><p class="name">Name: __________________</p></header>
+  <p><b>Brücke zu Rutherford:</b> Das Kern-Hülle-Modell beschreibt den kleinen positiven Kern und die Elektronenhülle, erklärt in klassischer Form aber weder stabile Elektronenzustände noch einzelne Linien. Bohr <em>postuliert</em> im historischen Modell nur bestimmte stationäre Energiezustände: Im Zustand selbst wird keine Strahlung abgegeben; bei einem Übergang entspricht die Photonenergie dem positiven Betrag der Energiedifferenz.</p>
+  <div class="equation">M2 · Modell für Wasserstoff: Eₙ = −13,6 eV / n² &nbsp; | &nbsp; ΔE = |E<sub>Anfang</sub> − E<sub>Ende</sub>| &nbsp; | &nbsp; λ<sub>Modell,Vakuum</sub> ≈ (1240 eV·nm) / ΔE</div>
+  <p class="small"><b>Einheiten:</b> eV ist eine Energieeinheit. In der letzten Division kürzt sich eV weg; nm bleibt übrig. Eine Umrechnung in Joule ist hier nicht nötig. Das Minus der gebundenen Energie macht die Photonenergie nicht negativ.</p>
+  <div class="task"><p><span class="step">3</span><b>Berechne E₂ bis E₅.</b> Prüfe die fertige Beispielzeile für n = 2; ergänze die begonnenen und leeren Felder. Runde die Ergebnisse auf drei Nachkommastellen, rechne danach aber mit ungerundeten Werten weiter.</p>
+   <table class="mini-table"><thead><tr><th>Zustand</th><th>n²</th><th>Einsetzung</th><th>Energie in eV</th></tr></thead><tbody>
+   <tr><td>n = 2</td><td>2² = 4</td><td>−13,6 / 4</td><td>−3,400 (Beispiel)</td></tr>
+   <tr><td>n = 3</td><td>3² = 9</td><td>−13,6 / 9</td><td>________</td></tr>
+   <tr><td>n = 4</td><td>________</td><td>−13,6 / ______</td><td>________</td></tr>
+   <tr><td>n = 5</td><td>________</td><td>−13,6 / ______</td><td>________</td></tr></tbody></table>
+  </div>
+  <div class="grid2"><div class="task"><p><span class="step">4</span><b>Beschrifte</b> die proportional vorbereiteten Linien rechts mit deinen vier Energiewerten. Warum liegen die oberen Linien dichter beieinander?</p><div class="answer short"></div></div>
+   <div class="tile"><b>Energiegerüst (keine räumlichen Bahnen)</b><div class="level-mini" role="img" aria-label="Lineare Energieachse mit vier proportional vorbereiteten Niveaus n 2 bis 5 und Ionisationsgrenze null eV"><div class="baseline"></div><span class="zero">0 eV · Ionisationsgrenze</span><div class="level n5"><span>n = 5</span></div><div class="level n4"><span>n = 4</span></div><div class="level n3"><span>n = 3</span></div><div class="level n2"><span>n = 2</span></div></div></div></div>
+  <div class="task"><p><span class="step">5</span><b>Berechne</b> für 3 → 2 die positive Photonenergie und die Modellwellenlänge. Entscheide mit Anfangs- und Endenergie, ob Emission oder Absorption vorliegt. Ordne den roten Messwert aus M1 zu.</p>
+   <div class="equation">ΔE = |−13,6/9 − (−3,400)| eV = ______ eV &nbsp; → &nbsp; λ = 1240 / ______ nm = ______ nm</div>
+   <p>Prozess: ____________. Luftmesswert: ____________ nm. Unterschied: ____________ nm.</p><div class="answer short"></div>
+  </div>
+  <p class="print-only small"><b>Beobachtung ohne Labor 1:</b> n = 3 liegt über n = 2. Der Übergangspfeil zeigt nach ______. Anfangsenergie ______ eV; Endenergie ______ eV.</p>
+  <details class="hintbox"><summary>Hilfe zu Station 1B: Potenz, Vorzeichen und Einheit</summary><div><p>Rechne zuerst n². Fremdes Beispiel für zwei negative Energien: |−1,00 − (−3,00)| = 2,00 eV. Beim Übergang 3 → 2 zuerst beide Werte mit ihren Minuszeichen in Klammern einsetzen, dann den Betrag bilden. λ hat die Einheit (eV·nm)/eV = nm. Der Pfeil zeigt zur energieärmeren Linie.</p></div></details>
+  <p class="screen-only">Erst den eigenen Pfeil vorhersagen, dann im <a href="#lab1" data-link-view="simulations">Labor 1 · Niveausprung</a> kontrollieren.</p>
+ </article>
+
+ <article class="sheet" id="station2">
+  <header class="sheet-head"><div><span class="station-label">Station 2 · ca. 17 Minuten</span><h2>Zwei weitere Linien berechnen und vergleichen</h2></div><p class="name">Name: __________________</p></header>
+  <p><b>Parameterkarte:</b> E₂ = −3,400 eV, E₃ = −1,511… eV, E₄ = −0,850 eV, E₅ = −0,544 eV. Wenn du bei Station 1B hängen bleibst, rechne mit diesen Werten weiter. Für die letzte Division möglichst die ungerundeten Werte aus Eₙ = −13,6/n² nutzen.</p>
+  <div class="equation">Bei gleichem Endzustand n = 2: ΔE = |E<sub>Anfang</sub> − E₂| &nbsp; → &nbsp; λ<sub>Modell,Vakuum</sub> ≈ 1240 / (ΔE in eV) nm.</div>
+  <div class="task"><p><span class="step">1</span><b>Berechne</b> ΔE und λ für 4 → 2 und 5 → 2. Die erste Zeile aus Station 1B zeigt das Verfahren. Ordne jeweils einen <b>Luftmesswert</b> zu.</p>
+   <table class="mini-table"><thead><tr><th>Übergang</th><th>E<sub>Anfang</sub></th><th>E₂</th><th>ΔE</th><th>λ Modell</th><th>λ M1</th></tr></thead><tbody>
+   <tr><td>3 → 2</td><td>−1,511…</td><td>−3,400</td><td>1,889 eV</td><td>656,5 nm</td><td>656,3 nm</td></tr>
+   <tr><td>4 → 2</td><td>−0,850</td><td>−3,400</td><td>_______ eV</td><td>_______ nm</td><td>_______ nm</td></tr>
+   <tr><td>5 → 2</td><td>−0,544</td><td>−3,400</td><td>_______ eV</td><td>_______ nm</td><td>_______ nm</td></tr></tbody></table>
+   <p>Ein Rechenweg mit Klammern: ΔE = |________ − (________)| eV = ________ eV; λ ≈ 1240 / ________ = ________ nm.</p><div class="answer short"></div>
+  </div>
+  <div class="task"><p><span class="step">2</span><b>Vergleiche und erkläre:</b> Berechne je Zeile |λ<sub>Modell</sub> − λ<sub>Luft</sub>|. Liegen die Abweichungen bei ungerundeten Zwischenwerten innerhalb von ±0,2 nm? Warum bedeutet dieser Zahlenvergleich keine exakte Gleichheit? Ergänze: Größere ΔE → ______ λ.</p><div class="answer medium"></div></div>
+  <div class="task"><p><span class="step">3</span><b>Prüfe</b> im Labor 2 oder auf dem gedruckten Skalenblatt die Musterprognose: drei gleichabständige Linien, drei ungleichabständige Linien oder ein Band? Notiere eine Beobachtung und eine Aussage, die das Modell <b>nicht</b> liefert (z. B. Intensität).</p><div class="answer short"></div></div>
+  <div class="note warning"><b>Vergleichsgrenze:</b> Die einfache Rechnung liefert Vakuumwellenlängen; M1 enthält Luftwellenlängen. Zusätzlich sind Modellgrößen und Luftdaten gerundet. Die Linienlagen stützen das Modell näherungsweise; die Differenz ist nicht einfach ein „Messfehler“.</div>
+  <details class="hintbox"><summary>Hilfe zu Station 2: dieselbe Rechenfolge</summary><div><p>Für 4 → 2: |−0,850 − (−3,400)| eV. Schreibe erst die Klammern, dann die positive Differenz. Im Ausdruck 1240/ΔE bleibt nm. Für 5 → 2 gehe genau so vor. Im Diagramm liegen 434,0 und 486,1 um 52,1 nm auseinander; vergleiche mit der Strecke bis 656,3 nm.</p></div></details>
+  <p class="screen-only">Nach eigener Tabelle den <a href="#lab2" data-link-view="simulations">Spektral-Abgleich</a> öffnen. Auf Papier reichen M1, Tabelle und Skalenblatt.</p>
+  <p class="small"><b>Erweiterung:</b> Berechne zusätzlich 6 → 2 und vergleiche mit der weiteren H-I-Luftlinie bei etwa 410,2 nm. Begründe, warum Schritte in n nicht zu gleichen Strichabständen führen.</p>
+ </article>
+
+ <article class="sheet" id="station3">
+  <header class="sheet-head"><div><span class="station-label">Station 3 · ca. 8 Minuten</span><h2>Emission, Absorption und Grenzen</h2></div><p class="name">Name: __________________</p></header>
+  <p><b>Prozesskarte M3:</b> Endet ein Übergang energieärmer, gibt das Atom ein Photon ab (Emission); endet er energiereicher, benötigt es ein genau passendes Photon (Absorption). Der Fall n = 2 setzt ein <b>bereits angeregtes</b> Wasserstoffatom voraus. Im idealisierten Modell führt eine unpassende Energie zu keinem dieser Übergänge.</p>
+  <div class="task"><p><span class="step">1</span><b>Ordne zu und begründe:</b> Nutze deine ΔE-Werte aus Station 1B/2. P1: 2 → 4; P2: 5 → 2; P3: Ein Atom in n = 2 trifft ein Photon mit 2,00 eV. Vergleiche P3 mit 2 → 3 (≈1,889 eV) und 2 → 4 (2,550 eV).</p>
+   <table class="mini-table"><thead><tr><th>Fall</th><th>Energie vor/nach oder Vergleich</th><th>Prozess</th><th>Photonenergie / λ, falls erlaubt</th></tr></thead><tbody>
+   <tr><td>P1</td><td>−3,400 → −0,850 eV</td><td>________</td><td>________</td></tr>
+   <tr><td>P2</td><td>−0,544 → −3,400 eV</td><td>________</td><td>________</td></tr>
+   <tr><td>P3</td><td>2,00 eV ≠ 1,889 / 2,550 eV</td><td>________</td><td>________</td></tr></tbody></table>
+  </div>
+  <div class="task"><p><span class="step">2</span><b>Berichtige</b> je einen Satz: K1 „Das Elektron fliegt auf einer roten Bahn.“ K2 „Bohr erklärt alle Atomspektren vollständig.“ K3 „Drei passende Linien beweisen das Modell endgültig.“</p><div class="answer medium"></div></div>
+  <div class="task"><p><span class="step">3</span><b>Entscheide</b> für das Foyer: Was lässt sich von Entwurf A oder B übernehmen und was muss geändert werden? Begründe mit den Messwerten und der Modellgrenze.</p><div class="answer short"></div></div>
+  <p class="print-only small"><b>Gedankenversuch statt Labor 3:</b> Wenn das Photon statt 2,00 eV genau 2,550 eV hätte und das Atom bereits in n = 2 wäre, welcher Übergang wäre im Modell möglich? ____________</p>
+  <details class="hintbox"><summary>Hilfe zu Station 3: Energie vor und nach dem Pfeil</summary><div><p>−0,850 eV liegt höher als −3,400 eV. Ein Aufwärtspfeil braucht Energiezufuhr, ein Abwärtspfeil gibt Energie ab. Für P3 genügt „ungefähr passend“ nicht: 2,00 eV liegt zwischen den betrachteten erlaubten Differenzen. Satzstarter: „Das Modell stützt … im Bereich …, zeigt aber nicht … .“</p></div></details>
+  <p class="screen-only">Prüfe P3 erst nach deiner Vorhersage im <a href="#lab3" data-link-view="simulations">Labor 3 · Photonenergie</a>.</p>
+ </article>
+
+ <article class="sheet" id="station4">
+  <header class="sheet-head"><div><span class="station-label">Station 4 · ca. 8 Minuten</span><h2>Produkt: Lichtcode-Panel H-03</h2></div><p class="name">Name: __________________</p></header>
+  <p><b>Auftrag:</b> Gestalte für das fiktive Foyer eine fachlich ehrliche Informationstafel. Die drei <em>ausgewählten</em> Messlinien stehen auf einer linearen nm-Skala; daneben gehören zugehörige Energieübergänge und ein Text über Aussage und Grenze. Du kannst dieses Blatt oder den iPad-Editor darunter benutzen.</p>
+  <div class="grid2"><div class="tile"><b>Panel 1 · gemessen (Luft)</b><p>Zeichne drei Linien auf einer linearen 400–700-nm-Skala. Setze Zahlenlabels, nicht nur Farbnamen.</p><div class="answer tall"></div></div><div class="tile"><b>Panel 2 · berechnet (Vakuum)</b><p>Zeichne die Niveaus n = 2 bis 5 mit drei Abwärtspfeilen; schreibe ΔE und λ dazu.</p><div class="answer tall"></div></div></div>
+  <div class="task"><p><span class="step">1</span><b>Formuliere Panel 3:</b> Warum einzelne Linien? Für welchen Fall gilt das Modell? Welche Grenze hat die Vorstellung einer Kreisbahn?</p><div class="answer medium"></div></div>
+  <div class="task"><p><span class="step">2</span><b>Gib eine Freigabeentscheidung:</b> Welche Teile von A und B können bleiben, welche müssen sich ändern? Trenne Messung und Modell durch Text und Linienart, damit das Blatt auch ohne Farbe verständlich ist.</p><div class="answer medium"></div></div>
+  <div class="task"><p><span class="step">3</span><b>Vergleiche</b> nach deinem ersten Entwurf mit der jederzeit zugänglichen Musterlösung. Markiere eine abweichende Zeile und schreibe den Grund der Verbesserung auf.</p><div class="answer short"></div></div>
+  <details class="hintbox"><summary>Hilfe zu Station 4: drei Felder und Satzstarter</summary><div><p>Panel 1: Luftmesswerte 434,0/486,1/656,3 nm auf linearer Achse. Panel 2: n = 3, 4, 5 jeweils nach n = 2. Panel 3: „Diskrete Energieunterschiede führen zu … . Das historische Modell gilt näherungsweise für …, erklärt aber nicht … .“ Freigabe: A verliert das Band; B verliert den Gleichabstand.</p></div></details>
+  <p class="small">Prüfliste: □ drei ausgewählte Luftwerte □ lineare Skala □ drei Pfeile □ positive ΔE und nm □ „Messung“/„Modell“ □ Wasserstoff und Grenze □ begründete Änderung von A/B.</p>
+ </article>
+
+ <article class="panel ipad-editor screen-only" id="ipad-editor">
+  <h2>iPad-Editor für Station 4</h2><p>Übertrage erst nach dem eigenen Rechnen deine drei Messwerte und die Übergangszuordnungen. Der Editor zeichnet die Striche maßstäblich und berechnet die angezeigten Modellwerte aus den gewählten Übergängen. Er bewertet deine Eingaben nicht. Sichere die Vorschau vor dem Schließen als PDF.</p>
+  <div class="grid3"><label>Messlinie 1 in nm<input type="text" inputmode="decimal" id="pL1" placeholder="z. B. 434,0"></label><label>Messlinie 2 in nm<input type="text" inputmode="decimal" id="pL2" placeholder="Wert aus M1"></label><label>Messlinie 3 in nm<input type="text" inputmode="decimal" id="pL3" placeholder="Wert aus M1"></label></div>
+  <div class="grid3"><label>Übergang zu Linie 1<select id="pT1"><option value="">Bitte zuordnen</option><option value="3">3 → 2</option><option value="4">4 → 2</option><option value="5">5 → 2</option></select></label><label>Übergang zu Linie 2<select id="pT2"><option value="">Bitte zuordnen</option><option value="3">3 → 2</option><option value="4">4 → 2</option><option value="5">5 → 2</option></select></label><label>Übergang zu Linie 3<select id="pT3"><option value="">Bitte zuordnen</option><option value="3">3 → 2</option><option value="4">4 → 2</option><option value="5">5 → 2</option></select></label></div>
+  <div class="grid2"><label>Erklärung der Linien<textarea id="pWhy" placeholder="Was erklärt das Modell?"></textarea></label><label>Geltung und Grenze<textarea id="pLimit" placeholder="Wasserstoff und historische Modellgrenze"></textarea></label></div>
+  <label>Freigabeentscheidung zu A und B<textarea id="pDecision" placeholder="Was wird verworfen oder geändert? Warum?"></textarea></label>
+  <div class="controls"><button type="button" class="sim-button" id="pUpdate">Vorschau aktualisieren</button><button type="button" class="sim-button secondary" id="pPrint">Druck: iPad-Panel als PDF</button></div>
+  <div class="readout" id="pStatus" role="status" aria-live="polite">Die Vorlage bleibt leer, bis du eigene Werte eingibst.</div>
+ </article>
+ <article class="panel digital-page" id="digital-page" aria-label="Druckbare Panelvorschau">
+  <h2>Lichtcode-Panel H-03 · drei ausgewählte H-I-Linien</h2><p>Gruppe: ____________________ &nbsp; Datum: __________ &nbsp; Messwerte und Näherungsrechnung sind sichtbar getrennt.</p>
+  <div class="grid3"><div class="tile"><b>1 · Luftmessung</b><svg id="pSpectrum" viewBox="0 0 600 260" role="img" aria-label="Lineare Skala 400 bis 700 Nanometer mit Farborientierung; noch ohne eingegebene Linien"><defs><linearGradient id="gradientIpad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#6941a8"/><stop offset="11.3%" stop-color="#7043ac"/><stop offset="28.7%" stop-color="#0788a6"/><stop offset="43.3%" stop-color="#459b6a"/><stop offset="60%" stop-color="#ccbb42"/><stop offset="70%" stop-color="#df8733"/><stop offset="85.4%" stop-color="#c4353e"/><stop offset="100%" stop-color="#a72c38"/></linearGradient></defs><path d="M35 195 H565 M35 189 v12 M123.3 189 v12 M211.7 189 v12 M300 189 v12 M388.3 189 v12 M476.7 189 v12 M565 189 v12" stroke="#14283b" stroke-width="2"/><g font-size="17" fill="#14283b" text-anchor="middle"><text x="35" y="226">400</text><text x="211.7" y="226">500</text><text x="388.3" y="226">600</text><text x="565" y="226">700</text><text x="300" y="253">λ in nm</text></g><rect class="wavelength-strip" x="35" y="233" width="530" height="8" fill="url(#gradientIpad)"/><g id="pSpectrumLines"></g></svg><p id="pMeasuredText">Noch keine Messwerte eingetragen.</p><p class="wavelength-note">Farbskala = Orientierung, kein Wasserstoff-Emissionsband.</p></div>
+   <div class="tile"><b>2 · Bohr-Modell (Vakuum)</b><svg id="pLevels" viewBox="0 0 380 220" role="img" aria-label="Proportionale Energieniveaus n gleich 2 bis 5; noch keine Pfeile"><path d="M55 20 H365" stroke="#65788b" stroke-dasharray="6 5"/><path d="M55 47 H365 M55 62 H365 M55 95 H365 M55 190 H365" stroke="#075f85" stroke-width="2"/><g font-size="15" fill="#14283b"><text x="2" y="24">0 eV</text><text x="2" y="51">n=5</text><text x="2" y="66">n=4</text><text x="2" y="99">n=3</text><text x="2" y="194">n=2</text></g><g id="pArrows"></g></svg><p id="pModelText">Noch keine Übergänge zugeordnet.</p></div>
+   <div class="tile"><b>3 · Deutung und Grenze</b><p><b>Warum Linien?</b><br><span class="typed" id="pWhyText">Noch nicht formuliert.</span></p><p><b>Geltung/Grenze:</b><br><span class="typed" id="pLimitText">Noch nicht formuliert.</span></p><p><b>Freigabe A/B:</b><br><span class="typed" id="pDecisionText">Noch nicht entschieden.</span></p></div></div>
+  <p class="small"><b>Modellhinweis:</b> Ausgewählte Luftreferenzwerte aus NIST, didaktisch gerundet. Vereinfachtes Bohr-Modell: Eₙ = −13,6 eV/n², hc ≈ 1240 eV·nm; λ im Vakuum. Farben sind Zusatzhinweise; Zahlen und Linienart bleiben im Schwarzweißdruck erkennbar. Intensität und Linienbreite sind nicht dargestellt.</p>
+ </article>
+</section>
+
+<section id="simulations" class="view-section" aria-labelledby="sim-title">
+ <div class="screen-head"><h1 id="sim-title">Simulationen und Vorstellungsmodelle</h1><p>Erst auf dem Stationsblatt vermuten und rechnen, dann einstellen, beobachten und erklären. Alle Daten sind lokal eingebettet.</p></div>
+ <article class="sim-card" id="way-model">
+  <h2>Vorstellungsmodell · Band, Raster oder Messung?</h2>
+  <p><b>Auftrag zu Station 1A:</b> Vergleiche nacheinander Entwurf A, B und die drei ausgewählten Luftmesslinien. Was zeigt ein heller Strich auf einer linearen nm-Skala? Warum reicht bei B die Zahl „drei“ noch nicht aus?</p>
+  <div class="controls"><label for="designChoice">Darstellung<select id="designChoice"><option value="A">A · durchgehendes Band</option><option value="B">B · drei gleich verteilte Striche</option><option value="M">M · drei ausgewählte Messlinien</option></select></label><button type="button" class="sim-button" id="designShow">Darstellung zeigen</button></div>
+  <svg class="sim-visual" id="designSvg" viewBox="0 0 760 230" role="img" aria-label="Lineare Skala von 400 bis 700 Nanometer mit Farborientierung; Darstellung nach Auswahl"><defs><linearGradient id="gradientDesign" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#6941a8"/><stop offset="11.3%" stop-color="#7043ac"/><stop offset="28.7%" stop-color="#0788a6"/><stop offset="43.3%" stop-color="#459b6a"/><stop offset="60%" stop-color="#ccbb42"/><stop offset="70%" stop-color="#df8733"/><stop offset="85.4%" stop-color="#c4353e"/><stop offset="100%" stop-color="#a72c38"/></linearGradient></defs><rect x="65" y="35" width="650" height="135" fill="#fff" stroke="#7c94a6"/><g id="designMarks"></g><path d="M65 185 H715" stroke="#14283b" stroke-width="2"/><g font-size="15" fill="#14283b" text-anchor="middle"><text x="65" y="211">400</text><text x="173.3" y="211">450</text><text x="281.7" y="211">500</text><text x="390" y="211">550</text><text x="498.3" y="211">600</text><text x="606.7" y="211">650</text><text x="715" y="211">700 nm</text></g><rect class="wavelength-strip" x="65" y="218" width="650" height="7" fill="url(#gradientDesign)"/></svg>
+  <p class="wavelength-note">Schmales Farbband: Orientierung zur Wellenlänge, kein durchgehendes H-Emissionsspektrum. Die große bunte Fläche bei A ist ein <b>Fehlentwurf</b>.</p>
+  <div class="readout" id="designReadout" role="status" aria-live="polite">Wähle eine Darstellung und vergleiche danach die Linienpositionen mit M1.</div>
+  <p class="small"><b>Annahme/Grenze:</b> Das Modell zeigt nur drei ausgewählte H-I-Linien und keine Intensität, Breite oder vollständige Farbwahrnehmung. Das Messraster verwendet Luftwellenlängen. Das Gitter in Station 1A ordnet Licht; es ist keine Zeichnung beobachteter Elektronenbahnen.</p>
+ </article>
+ <article class="sim-card" id="lab1">
+  <h2>Labor 1 · Niveausprung</h2><p><b>Auftrag zu Station 1B/3:</b> Wähle einen Anfangs- und Endzustand. Berechne oder schätze erst selbst, ob Emission, Absorption oder kein Wechsel vorliegt. Prüfe anschließend Pfeilrichtung, positive ΔE und Modellwellenlänge.</p>
+  <div class="controls"><label for="jumpStart">Anfang n<select id="jumpStart"><option value="2">2</option><option value="3" selected>3</option><option value="4">4</option><option value="5">5</option></select></label><label for="jumpEnd">Ende n<select id="jumpEnd"><option value="2" selected>2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></label><label for="jumpGuess">Meine Vorhersage<select id="jumpGuess"><option value="">Erst auswählen</option><option value="emission">Emission</option><option value="absorption">Absorption</option><option value="none">kein Wechsel</option></select></label><button type="button" class="sim-button" id="jumpCheck">Vorhersage prüfen</button><button type="button" class="sim-button secondary" id="jumpReset">Zurücksetzen</button></div>
+  <svg class="sim-visual" id="jumpSvg" viewBox="0 0 760 330" role="img" aria-label="Lineare Energieachse im vereinfachten Wasserstoffmodell, noch ohne Übergang"><path d="M80 25 V302" stroke="#14283b" stroke-width="2"/><path d="M80 25 H710" stroke="#617486" stroke-dasharray="6 5"/><path d="M130 67 H680 M130 91 H680 M130 143 H680 M130 290 H680" stroke="#075f85" stroke-width="2"/><g font-size="16" fill="#14283b"><text x="19" y="30">0 eV</text><text x="19" y="72">n=5</text><text x="19" y="96">n=4</text><text x="19" y="148">n=3</text><text x="19" y="295">n=2</text><text x="470" y="20">Energie (linear), keine Bahn</text></g><g id="jumpArrow"></g></svg>
+  <div class="readout" id="jumpReadout" role="status" aria-live="polite">Erst die Prozessart vorhersagen, dann prüfen.</div>
+  <p class="small"><b>Grenze:</b> Eₙ = −13,6 eV/n², hc ≈ 1240 eV·nm; die Rechnung liefert eine Vakuumwellenlänge. Die waagerechten Striche sind Energien, keine Kreisbahnen. Übergänge zwischen höheren Zuständen können auch außerhalb des sichtbaren Bereichs liegen.</p>
+ </article>
+ <article class="sim-card" id="lab2">
+  <h2>Labor 2 · Spektral-Abgleich</h2><p><b>Auftrag zu Station 2:</b> Ergänze erst die Rechentabelle und sage das Muster voraus. Wähle eine Vergleichsgrenze; zeige dann Luftmessung und vereinfachte Vakuumrechnung in getrennten Zeilen auf derselben linearen Skala. Warum ist der Zahlenvergleich nötig?</p>
+  <div class="controls"><label for="spectrumGuess">Meine Musterprognose<select id="spectrumGuess"><option value="">Erst auswählen</option><option value="band">durchgehendes Band</option><option value="equal">drei gleichabständige Linien</option><option value="unequal">drei ungleichabständige Linien</option></select></label><label for="spectrumTol">Vergleichsgrenze<select id="spectrumTol"><option value="0.1">±0,1 nm</option><option value="0.2" selected>±0,2 nm</option><option value="0.5">±0,5 nm</option></select></label><button type="button" class="sim-button" id="spectrumCheck">Vorhersage prüfen</button><button type="button" class="sim-button secondary" id="spectrumReset">Zurücksetzen</button></div>
+  <svg class="sim-visual" id="spectrumSvg" viewBox="0 0 760 300" role="img" aria-label="Zwei Reihen auf gleicher linearen Wellenlängenskala mit Farborientierung, noch ohne Linien"><defs><linearGradient id="gradientLab2" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#6941a8"/><stop offset="11.3%" stop-color="#7043ac"/><stop offset="28.7%" stop-color="#0788a6"/><stop offset="43.3%" stop-color="#459b6a"/><stop offset="60%" stop-color="#ccbb42"/><stop offset="70%" stop-color="#df8733"/><stop offset="85.4%" stop-color="#c4353e"/><stop offset="100%" stop-color="#a72c38"/></linearGradient></defs><path d="M65 245 H715" stroke="#14283b" stroke-width="2"/><g font-size="15" fill="#14283b" text-anchor="middle"><text x="65" y="272">400</text><text x="173.3" y="272">450</text><text x="281.7" y="272">500</text><text x="390" y="272">550</text><text x="498.3" y="272">600</text><text x="606.7" y="272">650</text><text x="715" y="272">700 nm</text></g><rect class="wavelength-strip" x="65" y="283" width="650" height="9" fill="url(#gradientLab2)"/><g id="spectrumMarks"></g></svg>
+  <div class="legend line-legend"><span>Messwert Luft: durchgezogen</span><span class="b">Modell Vakuum: gestrichelt</span></div><p class="wavelength-note">Das Farbband unter der Achse dient nur zur Orientierung; es ist kein durchgehendes Wasserstoffspektrum.</p>
+  <div class="readout" id="spectrumReadout" role="status" aria-live="polite">Erst die eigenen Zahlen und die Musterprognose notieren.</div>
+  <p class="small"><b>Grenze:</b> Die Abweichung um 0,17 nm ist auf der 300-nm-Gesamtskala kleiner als ein sichtbarer Strichabstand. Die zwei Reihen sind <i>senkrecht</i> getrennt; ihre horizontalen Positionen werden nicht künstlich verschoben. Intensitäten und Linienbreiten sind nicht simuliert.</p>
+ </article>
+ <article class="sim-card" id="lab3">
+  <h2>Labor 3 · Trifft ein Photon den passenden Übergang?</h2><p><b>Auftrag zu Station 3:</b> Ein Wasserstoffatom ist im Modell bereits in n = 2. Prüfe zunächst 2,00 eV und sage einen möglichen Zielzustand voraus. Verschiebe dann die Photonenergie zur Energie für 2 → 4. Was ändert sich?</p>
+  <div class="controls"><label for="photonEnergy">Photonenergie: <output id="photonEnergyText">2,000 eV</output><input id="photonEnergy" type="range" min="1.5" max="3.2" step="0.001" value="2.000"></label><label for="photonGuess">Meine Vorhersage<select id="photonGuess"><option value="">Erst auswählen</option><option value="3">n = 3</option><option value="4">n = 4</option><option value="5">n = 5</option><option value="none">kein Übergang</option></select></label><button type="button" class="sim-button" id="photonCheck">Energie prüfen</button><button type="button" class="sim-button secondary" id="photonReset">Zurücksetzen</button></div>
+  <svg class="sim-visual" id="photonSvg" viewBox="0 0 760 145" role="img" aria-label="Photonenergie-Skala und erforderliche Energien für Übergänge von n 2 nach 3, 4 und 5"><path d="M80 77 H680" stroke="#14283b" stroke-width="3"/><g font-size="15" fill="#14283b" text-anchor="middle"><text x="80" y="112">1,5</text><text x="680" y="112">3,2 eV</text><text x="217.3" y="42">2→3</text><text x="450.6" y="42">2→4</text><text x="558.6" y="42">2→5</text></g><path d="M217.3 57 V88 M450.6 57 V88 M558.6 57 V88" stroke="#075f85" stroke-width="3"/><line id="photonMarker" x1="256.5" x2="256.5" y1="60" y2="94" stroke="#a03d35" stroke-width="5"/></svg>
+  <div class="readout" id="photonReadout" role="status" aria-live="polite">Wähle einen Zielzustand oder „kein Übergang“ und prüfe erst dann.</div>
+  <p class="small"><b>Annahme/Grenze:</b> Die Auswahl vergleicht nur diskrete Übergänge aus n = 2; eine Anzeigetoleranz von ±0,005 eV fängt das Runden auf drei Nachkommastellen ab. Reale Linienbreite, Besetzungswahrscheinlichkeiten, Stöße und Ionisation werden nicht simuliert.</p>
+ </article>
+</section>
+
+<section id="solutions" class="view-section" aria-labelledby="solution-title">
+ <div class="screen-head"><h1 id="solution-title">Musterlösungen</h1><p>Jederzeit offen. Vergleiche den Rechenweg, markiere deine erste Abweichung und begründe die Berichtigung.</p></div>
+ <article class="panel print-page">
+  <h2>So vergleichst du selbst</h2><ol><li>Schreibe zuerst deine Vermutung oder Rechnung auf.</li><li>Prüfe Datenwert, Vorzeichen, Rechenschritt und Einheit nacheinander.</li><li>Berichtige die abweichende Zeile und schreibe auf, warum deine neue Aussage passt.</li></ol>
+  <h3>Station 1A · Spektrum und Skala</h3>
+  <p><b>1.</b> Eine begründete erste Vermutung ist: B wirkt wegen einzelner Linien näher am Schirmbild als A. Ob B die Striche an den richtigen Stellen zeichnet, lässt sich erst mit den Luftwellenlängen auf einer linearen Skala entscheiden. A behauptet ein durchgehendes Wasserstoff-Emissionsband, das die ausgewählten Linien nicht zeigen.</p>
+  <p><b>2.</b> Von 400 bis 700 nm liegen 300 nm. 434,0 nm liegt nahe am linken Rand; 486,1 nm kurz vor 500; 656,3 nm etwas rechts von 650. Die Differenzen sind <b>52,1 nm</b> und <b>170,2 nm</b>. Daher sind die drei ausgewählten Linien nicht gleichabständig. A verliert das Band; B darf einzelne Striche behalten, muss aber deren Positionen und Zahlen korrigieren. Drei ausgewählte Linien sind keine Behauptung, Wasserstoff habe insgesamt nur drei Linien.</p>
+  <h3>Station 1B · Energieniveaus und rote Linie</h3>
+  <p><b>3.</b> Eₙ = −13,6 eV/n². Erst n quadrieren, dann dividieren und erst im Ergebnis auf drei Stellen runden:</p>
+  <table class="mini-table"><thead><tr><th>n</th><th>n²</th><th>Einsetzung</th><th>Eₙ</th></tr></thead><tbody><tr><td>2</td><td>4</td><td>−13,6/4</td><td>−3,400 eV</td></tr><tr><td>3</td><td>9</td><td>−13,6/9</td><td>−1,511… eV</td></tr><tr><td>4</td><td>16</td><td>−13,6/16</td><td>−0,850 eV</td></tr><tr><td>5</td><td>25</td><td>−13,6/25</td><td>−0,544 eV</td></tr></tbody></table>
+  <p><b>4.</b> Von unten nach oben: n = 2 (−3,400 eV), n = 3 (−1,511… eV), n = 4 (−0,850 eV), n = 5 (−0,544 eV), dann 0 eV als Ionisationsgrenze. Die Differenzen zwischen benachbarten Niveaus werden kleiner: etwa 1,889, 0,661 und 0,306 eV. Die Höhe im Bild steht für Energie und ist keine räumliche Elektronenbahn.</p>
+  <p><b>5.</b> Für 3 → 2: E<sub>Anfang</sub> = −13,6/9 eV = −1,511… eV und E<sub>Ende</sub> = −3,400 eV. Daher ΔE = |−1,511… − (−3,400)| eV = 1,888… eV ≈ <b>1,889 eV</b>. λ<sub>Modell,Vakuum</sub> = (1240 eV·nm)/(1,888… eV) ≈ <b>656,5 nm</b>. Das Ende ist energieärmer: Abwärtspfeil und <b>Emission</b>. Zuordnung: 656,3 nm, rot, als ausgewählter Luftwert. Die ungerundete Differenz beträgt etwa 0,17 nm; aus den angezeigten Zehntelwerten ergibt sich 0,2 nm. Auch ohne Labor folgt der Pfeil aus den beiden Energien.</p>
+ </article>
+ <article class="panel print-page">
+  <h2>Station 2 · Zwei weitere Linien</h2>
+  <p><b>1.</b> Für 4 → 2: ΔE = |−0,850 − (−3,400)| eV = <b>2,550 eV</b>; λ<sub>Modell,Vakuum</sub> = 1240/2,550 nm = 486,274… nm ≈ <b>486,3 nm</b>; zugeordneter Luftwert <b>486,1 nm</b>. Für 5 → 2: ΔE = |−0,544 − (−3,400)| eV = <b>2,856 eV</b>; λ<sub>Modell,Vakuum</sub> = 1240/2,856 nm = 434,173… nm ≈ <b>434,2 nm</b>; Luftwert <b>434,0 nm</b>.</p>
+  <table class="mini-table"><thead><tr><th>Übergang</th><th>ΔE</th><th>λ Modell (Vakuum)</th><th>λ M1 (Luft)</th><th>|Differenz| ungerundet</th></tr></thead><tbody><tr><td>3 → 2</td><td>1,889 eV</td><td>656,5 nm</td><td>656,3 nm</td><td>≈0,171 nm</td></tr><tr><td>4 → 2</td><td>2,550 eV</td><td>486,3 nm</td><td>486,1 nm</td><td>≈0,175 nm</td></tr><tr><td>5 → 2</td><td>2,856 eV</td><td>434,2 nm</td><td>434,0 nm</td><td>≈0,174 nm</td></tr></tbody></table>
+  <p><b>2.</b> Alle drei ungerundeten Zahlendifferenzen liegen unter ±0,2 nm. Größere positive ΔE bedeutet bei konstantem hc eine <b>kürzere</b> Wellenlänge. Eine exakte Gleichheit ist hier weder behauptet noch geprüft: Die Bohr-Näherung mit hc/λ benutzt Vakuumwellenlängen, M1 Luftwellenlängen; außerdem sind Modellkonstanten und ausgewählte Luftdaten gerundet, Feinstruktur bleibt unberücksichtigt. Die Näherung stützt die Zuordnung, nicht Linienintensitäten.</p>
+  <p><b>3.</b> Auf der linearen Skala stehen drei ausgewählte <b>ungleichabständige</b> Linien. Die separate Laborreihe verwendet dieselben horizontalen Koordinaten, ihre kleine numerische Abweichung ist auf 400–700 nm kaum zu erkennen; darum die Werte vergleichen. Eine Linienlage bestimmt noch keine Helligkeit oder Linienbreite. Auf Papier liefert die Tabelle denselben Befund.</p>
+  <p><b>Erweiterung:</b> E₆ = −13,6/36 eV ≈ −0,378 eV; ΔE₆→₂ = 3,022… eV; λ<sub>Modell,Vakuum</sub> = 1240/3,022… nm ≈ <b>410,3 nm</b>. Der zusätzliche Luftreferenzwert liegt um 410,2 nm. Die 1/n²-Abhängigkeit und λ = hc/ΔE führen nicht zu gleichen Abständen; die Luft-/Vakuumgrenze bleibt.</p>
+ </article>
+ <article class="panel print-page">
+  <h2>Station 3 · Prozesse und Modellgrenzen</h2>
+  <p><b>1. P1:</b> 2 → 4 von −3,400 auf −0,850 eV: Das Atom gewinnt <b>2,550 eV</b>; es <b>absorbiert</b> ein passendes Photon mit λ<sub>Modell,Vakuum</sub> ≈ 486,3 nm, sofern es bereits in n = 2 ist.</p>
+  <p><b>P2:</b> 5 → 2 von −0,544 auf −3,400 eV: Das Atom verliert <b>2,856 eV</b>; es <b>emittiert</b> ein Photon mit λ<sub>Modell,Vakuum</sub> ≈ 434,2 nm.</p>
+  <p><b>P3:</b> Aus n = 2 benötigt das Atom für 2 → 3 ungefähr 1,889 eV, für 2 → 4 2,550 eV, für 2 → 5 2,856 eV. Zur Ionisation aus n = 2 wären im Modell 3,400 eV nötig. 2,00 eV passt zu keinem betrachteten erlaubten Übergang; im idealisierten Modell <b>kein Übergang</b> und somit keine Übergangswellenlänge. Als Druck-Gedankenversuch: Bei genau 2,550 eV ist 2 → 4 als Absorption möglich.</p>
+  <p><b>2. K1:</b> Farbe beziehungsweise Wellenlänge hängt von der Energiedifferenz ab, nicht von einer farbigen Kreisbahn. <b>K2:</b> Das historische Bohr-Modell beschreibt Wasserstoff und wasserstoffartige Ein-Elektron-Systeme näherungsweise, aber keine vollständigen Spektren komplexer Atome. <b>K3:</b> Die Übereinstimmung der Linienlagen stützt die diskreten Energien im geprüften Bereich; sie beweist kein Modell endgültig und macht Bahnen nicht zu beobachteten Wegen.</p>
+  <p><b>3.</b> A kann eine Orientierungsskala behalten, nicht das durchgehende Emissionsband. B kann die Idee einzelner Striche behalten, nicht deren Gleichabstand. Messwerte, Modellwerte und Reichweite werden im neuen Panel getrennt beschriftet.</p>
+  <h2>Station 4 · Ein mögliches vollständiges H-03-Panel</h2>
+  <p><b>Panel 1 · gemessen:</b> Lineare 400–700-nm-Skala mit durchgezogenen Strichen und Luftzahlen 434,0, 486,1, 656,3 nm. Ihre Abstände sind 52,1 und 170,2 nm. Die Farbnamen „blauviolett, blaugrün, rot“ sind zusätzliche Hinweise.</p>
+  <p><b>Panel 2 · berechnet:</b> Proportionale Energieniveaus n = 2 bis 5; drei gestrichelte <b>Abwärts</b>pfeile 3, 4, 5 → 2. Neben ihnen ΔE = 1,889/2,550/2,856 eV und λ<sub>Modell,Vakuum</sub> ≈ 656,5/486,3/434,2 nm. Die Pfeile zeigen Energieänderungen, keine gefilmten Bahnen.</p>
+  <p><b>Panel 3 · Deutung/Grenze:</b> „Im vereinfachten Bohr-Modell sind nur bestimmte Energien erlaubt. Ihre Differenzen legen einzelne Photonenergien und Wellenlängen fest. Die drei ausgewählten Messlinien stützen diese Näherung für Wasserstoff; Kreisbahnen sind keine beobachteten Elektronenwege und Intensitäten bleiben offen.“</p>
+  <p><b>Freigabe:</b> A ohne durchgehendes Band, B ohne gleichmäßige Abstände; erst das korrigierte H-03-Panel mit Zahlen, Linienart und Modellstatus ist geeignet. <b>Selbstvergleich:</b> Zum Beispiel „Ich habe Modellwert und Luftwert gleichgesetzt; ich schreibe nun beide mit ihrem Medienbezug getrennt, weil die Zahlen nur näherungsweise zusammenpassen.“ Ein gleichwertig begründeter eigener Text ist richtig.</p>
+ </article>
+</section>
+
+<section id="hints" class="view-section" aria-labelledby="hints-title">
+ <div class="screen-head"><h1 id="hints-title">Hilfenblatt zum getrennten Drucken</h1><p>Dieselben Hilfen stehen digital direkt an der jeweiligen Aufgabe als aufklappbarer Hinweis.</p></div>
+ <article class="panel print-page"><h2>Kurzhilfen für die vier Stationen</h2>
+  <h3>Station 1A · Spektrum und lineare Skala</h3><p>Ein heller Strich zeigt ausgesandtes Licht bei einer bestimmten Wellenlänge. Von 400 bis 700 nm sind es 300 nm; jedes große Skalenfeld entspricht 50 nm. 434,0 nm ist vorgedruckt, 486,1 nm liegt links von 500, 656,3 nm rechts von 650. Rechne die beiden Abstände getrennt aus. Einzelne Linien ergeben kein durchgehendes Band.</p>
+  <h3>Station 1B · Potenzen, Vorzeichen und Einheit</h3><p>Für n = 2 gilt 2² = 4 und E₂ = −13,6/4 = −3,400 eV. Für n = 3 beginne mit 3² = 9. Fremdes Vorzeichenbeispiel: |−1,00 − (−3,00)| = 2,00 eV. Beide Minuszeichen in Klammern lassen. Bei λ ≈ (1240 eV·nm)/ΔE kürzt sich eV; das Ergebnis ist in nm.</p>
+  <h3>Station 2 · dieselbe Rechenfolge für zwei weitere Linien</h3><p>Immer E<sub>Anfang</sub> und E₂ mit Vorzeichen aufschreiben, den positiven Betrag bilden, dann 1240/ΔE berechnen. Für 4 → 2 lautet der erste Schritt |−0,850 − (−3,400)| eV. Vergleiche die Modellzahl (Vakuum) mit einem ausgewählten Luftwert aus M1; behaupte keine exakte Gleichheit. Größere ΔE bedeutet kürzere λ.</p>
+  <h3>Station 3 · drei Prozesse und drei zu starke Aussagen</h3><p>−0,850 eV liegt höher als −3,400 eV. Aufwärts bedeutet Energieaufnahme, abwärts Energieabgabe. Aus n = 2 benötigen die ersten beiden Aufwärtssprünge etwa 1,889 und 2,550 eV. Satzstarter: „Dieser Wert passt zu … / passt zu keinem betrachteten Sprung.“ Für die Korrekturen trenne gemessene Linie, historisches Modell und nicht erklärte Vorgänge.</p>
+  <h3>Station 4 · Panel mit drei Bereichen</h3><p>„Die ausgewählten Luftmesswerte sind … . Im Modell führen die Übergänge 3, 4, 5 → 2 zu … . Diskrete Energiedifferenzen erzeugen … . Das Modell stützt … für …, erklärt aber nicht … .“ Setze die Messstriche auf die lineare Achse und die Modellpfeile auf ein Energiegerüst; kennzeichne beides mit Text, damit Schwarzweißdruck genügt.</p>
+  <p class="note">Hilfen und Lösungen bleiben offen verfügbar. Schreibe zuerst deinen eigenen Ansatz und markiere beim Selbstvergleich die verbesserte Zeile samt Grund.</p>
+ </article>
+</section>
+
+<section id="sources" class="view-section" aria-labelledby="sources-title">
+ <div class="screen-head"><h1 id="sources-title">Glossar, Annahmen und Quellen</h1><p>Kurze Begriffe und die Reichweite des historischen Wasserstoffmodells.</p></div>
+ <article class="panel print-page"><h2>Glossar</h2>
+  <dl class="glossary"><div><dt>Spektrum</dt><dd>Licht nach Wellenlängen geordnet.</dd></div><div><dt>Spektrallinie</dt><dd>Enger Wellenlängenbereich; bei Emission hell, bei Absorption dunkel. Das Dossier behandelt ausgewählte helle Linien.</dd></div><div><dt>Wellenlänge λ</dt><dd>Länge einer Lichtschwingung; hier in nm. 1 nm = 10⁻⁹ m.</dd></div><div><dt>H I</dt><dd>Neutrales Wasserstoffatom; die drei Dossierwerte sind ausgewählte H-I-Linien.</dd></div><div><dt>eV</dt><dd>Elektronenvolt, eine Einheit der Energie. In den Aufgaben werden eV und nm direkt verwendet.</dd></div><div><dt>Energieniveau n</dt><dd>Im Bohr-Modell erlaubter Energiezustand; n = 1, 2, 3 … ist seine Nummer, keine räumliche Höhe.</dd></div><div><dt>Stationärer Zustand</dt><dd>Historische Modellannahme: Solange das Elektron in diesem Zustand bleibt, strahlt es nicht fortlaufend.</dd></div><div><dt>Photon</dt><dd>Ein Lichtquant; seine Energie entspricht bei einem Modellübergang dem positiven Betrag der Energiedifferenz.</dd></div><div><dt>Emission / Absorption</dt><dd>Abgabe eines Photons bei einem Übergang zu niedrigerer Energie / Aufnahme passender Energie bei einem Übergang zu höherer Energie.</dd></div><div><dt>Ionisationsgrenze</dt><dd>Im vereinfachten Energiegerüst E = 0 eV; ein gebundenes Elektron hat hier eine negative Modellenergie.</dd></div></dl>
+  <h2>Annahmen und fachliche Abgrenzung</h2><ul><li>Foyer, Team und Gestaltungsfreigabe H-03 sind fiktiv. Das Datendossier nennt drei ausgewählte, auf 0,1 nm gerundete <b>Luft</b>wellenlängen von neutralem Wasserstoff. Es bildet weder das vollständige Spektrum noch Linienbreite und Intensität ab; eine weitere H-I-Linie liegt bei etwa 410,2 nm.</li><li>Die schulische Näherung Eₙ = −13,6 eV/n² und hc ≈ 1240 eV·nm liefert <b>Vakuum</b>wellenlängen. Die Differenzen um 0,17 nm zum Luftdatensatz hängen unter anderem mit diesem Medienbezug und der Vereinfachung zusammen. Die Zahlen stimmen näherungsweise, aber ein exakt gleichartiger Präzisionsvergleich wird hier nicht behauptet.</li><li>Bohrs stationäre Zustände sind historische Modellpostulate. Die gezeichneten Energiegerüste sind keine Aufnahmen tatsächlicher Elektronenbahnen. Bei Absorption muss das Atom schon im angegebenen Anfangszustand sein; der Fall n = 2 ist deshalb ein angeregtes Wasserstoffatom.</li><li>Komplexe Atome, Orbitalbilder, Linienintensitäten, Feinstruktur, Stoßprozesse und Lumineszenz werden in dieser Doppelstunde nicht erklärt. Die Zahlentoleranz im Spektral-Abgleich dient nur der Unterrichtsprüfung; sie ist kein messtechnischer Grenzwert.</li></ul>
+  <h2>Fachquellen (Links optional, die Datei funktioniert offline)</h2><ul>
+   <li>NIST Physical Measurement Laboratory, <a href="https://physics.nist.gov/PhysRefData/Handbook/Tables/hydrogentable2.htm">Strong Lines of Hydrogen</a>: ausgewählte Luftlinien bei 4340,462 Å, 4861,2870 Å, 6562,7110 Å und eine weitere bei 4101,74 Å; für das Dossier in nm auf 0,1 gerundet.</li>
+   <li>NIST, <a href="https://physics.nist.gov/Pubs/AtSpec/node01.html">Atomic Spectroscopy: Introduction</a>: Zusammenhang zwischen Niveauabstand, Photonenergie und Vakuumwellenlänge.</li>
+   <li>N. Bohr, „On the Constitution of Atoms and Molecules“, <i>Philosophical Magazine</i>, 1913: fachhistorische Primärquelle für das Modell.</li>
+  </ul>
+ </article>
+</section>
+</main>
+<script>
+(() => {
+ 'use strict';
+ const $=id=>document.getElementById(id);
+ const fmt=(value,digits=1)=>Number(value).toFixed(digits).replace('.',',');
+ const energy=n=>-13.6/(n*n);
+ const ns='http://www.w3.org/2000/svg';
+ const mk=(tag,attrs,text)=>{const node=document.createElementNS(ns,tag);Object.entries(attrs).forEach(([key,value])=>node.setAttribute(key,String(value)));if(text!==undefined)node.textContent=text;return node;};
+ const xNm=lambda=>65+(lambda-400)/300*650;
+ const spectrumPalette=[[400,[105,65,168]],[434,[112,67,172]],[486.1,[7,136,166]],[530,[69,155,106]],[580,[204,187,66]],[610,[223,135,51]],[656.3,[196,53,62]],[700,[167,44,56]]];
+ function colorForNm(lambda){
+  const end=spectrumPalette.findIndex(([nm])=>nm>=lambda);
+  if(end===-1)return '#a72c38';
+  if(end===0)return '#6941a8';
+  const [hi,rgbHi]=spectrumPalette[end],[lo,rgbLo]=spectrumPalette[end-1],mix=(lambda-lo)/(hi-lo);
+  return '#'+rgbLo.map((v,i)=>Math.round(v+(rgbHi[i]-v)*mix).toString(16).padStart(2,'0')).join('');
+ }
+ function showView(name){
+  document.body.dataset.view=name;
+  document.querySelectorAll('[data-show]').forEach(button=>button.setAttribute('aria-current',String(button.dataset.show===name)));
+  window.scrollTo({top:0,behavior:'auto'});
+ }
+ document.querySelectorAll('[data-show]').forEach(button=>button.addEventListener('click',()=>showView(button.dataset.show)));
+ document.querySelectorAll('[data-link-view]').forEach(link=>link.addEventListener('click',event=>{
+  event.preventDefault();showView(link.dataset.linkView);
+  const target=document.querySelector(link.getAttribute('href'));if(target)target.scrollIntoView({block:'start'});
+ }));
+ document.querySelectorAll('[data-print-part]').forEach(button=>button.addEventListener('click',()=>{document.body.dataset.print=button.dataset.printPart;window.print();}));
+ window.addEventListener('afterprint',()=>{document.body.dataset.print='student';});
+
+ // Vorstellungsmodell: gleiche lineare Skala für beide Entwürfe und den Datenausschnitt.
+ function drawDesign(){
+  const group=$('designMarks'),choice=$('designChoice').value;group.replaceChildren();
+  if(choice==='A'){
+   group.appendChild(mk('rect',{x:67,y:37,width:646,height:131,fill:'url(#gradientDesign)',opacity:.74}));
+   group.appendChild(mk('text',{x:310,y:104,'font-size':20,fill:'#14283b'},'durchgehendes Band'));
+   $('designReadout').textContent='A zeigt an jeder Stelle ein durchgehendes Emissionsband. Die ausgewählten H-I-Linien zeigen stattdessen einzelne helle Bereiche. A wird so nicht freigegeben.';
+  }else{
+   const lambdas=choice==='B'?[466,547,628]:[434,486.1,656.3];
+   lambdas.forEach((lambda,index)=>{
+    const x=xNm(lambda);group.appendChild(mk('line',{x1:x,x2:x,y1:52,y2:155,stroke:choice==='M'?colorForNm(lambda):'#14283b','stroke-width':5}));
+    if(choice==='M')group.appendChild(mk('text',{x:x-24,y:45,'font-size':15,fill:'#14283b'},fmt(lambda,1)));
+   });
+   $('designReadout').textContent=choice==='B'?'B zeichnet drei Striche, verschiebt sie aber in ein gleichmäßiges Designraster. Vergleiche die wirklichen nm-Abstände.':'Messauswahl: 434,0, 486,1 und 656,3 nm. Die Striche sind ungleichabständig; es gibt weitere H-I-Linien außerhalb dieser Auswahl.';
+  }
+  $('designSvg').setAttribute('aria-label',$('designReadout').textContent+' Lineare Achse von 400 bis 700 nm.');
+ }
+ $('designShow').addEventListener('click',drawDesign);
+
+ // Labor 1: lineare Energieachse, diskrete Zustände und positiver Energiebetrag.
+ const jumpY={2:290,3:143,4:91,5:67};
+ function resetJump(){ $('jumpArrow').replaceChildren();$('jumpGuess').value='';$('jumpReadout').textContent='Neue Zustände gewählt. Sage zuerst die Prozessart voraus.';$('jumpSvg').setAttribute('aria-label','Lineare Energieachse n gleich 2 bis 5, noch ohne Übergang.'); }
+ function checkJump(){
+  const start=Number($('jumpStart').value),end=Number($('jumpEnd').value),guess=$('jumpGuess').value;
+  if(!guess){$('jumpReadout').textContent='Wähle zuerst Emission, Absorption oder keinen Wechsel.';return;}
+  const process=start===end?'none':end<start?'emission':'absorption';
+  const group=$('jumpArrow');group.replaceChildren();
+  const delta=Math.abs(energy(start)-energy(end));
+  if(process!=='none'){
+   const y1=jumpY[start],y2=jumpY[end],arrow=y2>y1?'down':'up';
+   group.appendChild(mk('line',{x1:415,x2:415,y1:y1,y2:y2,stroke:'#a03d35','stroke-width':4}));
+   group.appendChild(mk('path',{d:arrow==='down'?`M407 ${y2-10} L415 ${y2} L423 ${y2-10}`:`M407 ${y2+10} L415 ${y2} L423 ${y2+10}`,fill:'none',stroke:'#a03d35','stroke-width':4}));
+  }
+  const lambda=process==='none'?null:1240/delta;
+  const region=lambda===null?'':lambda<400?'Ultraviolett':lambda>700?'Infrarot':'sichtbar';
+  const explanation=process==='none'?'Anfang und Ende sind gleich: keine Energiedifferenz und kein Photonübergang.':
+   `${process==='emission'?'Emission':'Absorption'}: E-Anfang ${fmt(energy(start),3)} eV, E-Ende ${fmt(energy(end),3)} eV; positive ΔE ${fmt(delta,3)} eV; λ im Vakuum ≈ ${fmt(lambda,1)} nm (${region}).`;
+  $('jumpReadout').textContent=(guess===process?'Deine Vorhersage passt. ':'Prüfe deine Vorhersage erneut. ')+explanation;
+  $('jumpSvg').setAttribute('aria-label',`Lineare Energieniveaus von n 2 bis 5. Übergang ${start} nach ${end}. `+explanation);
+ }
+ $('jumpStart').addEventListener('change',resetJump);$('jumpEnd').addEventListener('change',resetJump);
+ $('jumpCheck').addEventListener('click',checkJump);
+ $('jumpReset').addEventListener('click',()=>{$('jumpStart').value='3';$('jumpEnd').value='2';resetJump();});
+
+ // Labor 2: Luftmessung und vereinfachte Vakuumrechnung auf gleichen x-Koordinaten.
+ const measured=[434,486.1,656.3];
+ const model=[5,4,3].map(n=>1240/(energy(n)-energy(2)));
+ function resetSpectrum(){ $('spectrumMarks').replaceChildren();$('spectrumGuess').value='';$('spectrumReadout').textContent='Neue Vergleichsgrenze gewählt. Sage zuerst das Muster voraus.';$('spectrumSvg').setAttribute('aria-label','Lineare Skala 400 bis 700 nm, noch ohne Linien.'); }
+ function checkSpectrum(){
+  const guess=$('spectrumGuess').value;if(!guess){$('spectrumReadout').textContent='Wähle zuerst eine Musterprognose.';return;}
+  const group=$('spectrumMarks');group.replaceChildren();
+  group.appendChild(mk('text',{x:65,y:30,'font-size':18,fill:'#14283b'},'Luftmessung · durchgezogen'));
+  group.appendChild(mk('text',{x:65,y:140,'font-size':18,fill:'#14283b'},'Modell im Vakuum · gestrichelt'));
+  measured.forEach(lambda=>{const x=xNm(lambda);group.appendChild(mk('line',{x1:x,x2:x,y1:58,y2:112,stroke:colorForNm(lambda),'stroke-width':5}));group.appendChild(mk('text',{x:x-22,y:51,'font-size':14,fill:'#14283b'},fmt(lambda,1)));});
+  model.forEach(lambda=>{const x=xNm(lambda);group.appendChild(mk('line',{x1:x,x2:x,y1:168,y2:223,stroke:colorForNm(lambda),'stroke-width':4,'stroke-dasharray':'6 5'}));group.appendChild(mk('text',{x:x-22,y:160,'font-size':14,fill:'#14283b'},fmt(lambda,1)));});
+  const max=Math.max(...model.map((value,index)=>Math.abs(value-measured[index]))),tol=Number($('spectrumTol').value);
+  $('spectrumReadout').textContent=(guess==='unequal'?'Musterprognose passend. ':'Musterprognose erneut prüfen. ')+
+   `Drei ausgewählte ungleichabständige Linien; größte Zahlendifferenz ≈ ${fmt(max,2)} nm, ${max<=tol?'innerhalb':'außerhalb'} ±${fmt(tol,1)} nm. Messung in Luft und Modell im Vakuum sind nur näherungsweise vergleichbar; Intensität bleibt offen.`;
+  $('spectrumSvg').setAttribute('aria-label','Zwei getrennte Reihen mit identischer linearer x-Achse: Luftmessung 434,0, 486,1, 656,3 nm; Modell im Vakuum 434,2, 486,3, 656,5 nm. Keine künstliche horizontale Verschiebung.');
+ }
+ $('spectrumTol').addEventListener('change',resetSpectrum);$('spectrumCheck').addEventListener('click',checkSpectrum);
+ $('spectrumReset').addEventListener('click',()=>{$('spectrumTol').value='0.2';resetSpectrum();});
+
+ // Labor 3: Photonenergie gegen die drei erlaubten Differenzen aus n=2 prüfen.
+ function movePhoton(){
+  const value=Number($('photonEnergy').value),x=80+(value-1.5)/1.7*600;
+  $('photonMarker').setAttribute('x1',x);$('photonMarker').setAttribute('x2',x);
+  $('photonEnergyText').textContent=fmt(value,3)+' eV';$('photonGuess').value='';
+  $('photonReadout').textContent='Energie verändert. Sage den Zielzustand oder „kein Übergang“ voraus.';
+ }
+ function checkPhoton(){
+  const guess=$('photonGuess').value;if(!guess){$('photonReadout').textContent='Triff zuerst eine eigene Prozessvorhersage.';return;}
+  const value=Number($('photonEnergy').value),choices=[3,4,5],best=choices.reduce((a,b)=>Math.abs((energy(a)-energy(2))-value)<Math.abs((energy(b)-energy(2))-value)?a:b);
+  const actual=Math.abs((energy(best)-energy(2))-value)<=0.005?String(best):'none';
+  const result=actual==='none'?'Keine der drei betrachteten diskreten Energiedifferenzen passt; im idealisierten Modell kein Übergang.':`Absorption aus n = 2 nach n = ${actual} ist im gerundeten Anzeigemodell möglich; ΔE ≈ ${fmt(energy(Number(actual))-energy(2),3)} eV.`;
+  $('photonReadout').textContent=(guess===actual?'Vorhersage passend. ':'Vorhersage erneut prüfen. ')+result;
+  $('photonSvg').setAttribute('aria-label',`Photonenergie ${fmt(value,3)} eV; `+result);
+ }
+ $('photonEnergy').addEventListener('input',movePhoton);$('photonCheck').addEventListener('click',checkPhoton);
+ $('photonReset').addEventListener('click',()=>{$('photonEnergy').value='2.000';movePhoton();});
+
+ // Optionales iPad-Produkt. Eingaben werden nur im geöffneten Dokument gehalten.
+ const indices=[1,2,3];
+ function readWavelength(raw){const value=raw.trim().replace(',','.');if(!/^\d{3}(?:\.\d{1,3})?$/.test(value))return null;const n=Number(value);return n>=400&&n<=700?n:null;}
+ function readText(id,empty){return $(id).value.trim()||empty;}
+ function updatePanel(){
+  const marks=$('pSpectrumLines'),arrows=$('pArrows');marks.replaceChildren();arrows.replaceChildren();
+  const wavelengths=indices.map(i=>readWavelength($('pL'+i).value));
+  const transitions=indices.map(i=>Number($('pT'+i).value)||null);
+  const measurements=[],models=[];
+  wavelengths.forEach((lambda,index)=>{if(lambda===null)return;const x=35+(lambda-400)/300*530;
+   marks.appendChild(mk('line',{x1:x,x2:x,y1:67,y2:184,stroke:colorForNm(lambda),'stroke-width':5}));
+   marks.appendChild(mk('text',{x:x-21,y:58,'font-size':16,fill:'#14283b'},fmt(lambda,1)));
+   measurements.push(`Linie ${index+1}: ${fmt(lambda,1)} nm Luft`);
+  });
+  const y={3:95,4:62,5:47};
+  transitions.forEach((n,index)=>{if(n===null)return;const x=150+index*73,delta=energy(n)-energy(2),lambda=1240/delta;
+   arrows.appendChild(mk('line',{x1:x,x2:x,y1:y[n],y2:187,stroke:'#a03d35','stroke-width':3,'stroke-dasharray':'6 4'}));
+   arrows.appendChild(mk('path',{d:`M${x-6} 179 L${x} 190 L${x+6} 179`,fill:'none',stroke:'#a03d35','stroke-width':3}));
+   models.push(`Linie ${index+1}: ${n} → 2; ΔE ${fmt(delta,3)} eV; λ ${fmt(lambda,1)} nm Vakuum`);
+  });
+  $('pMeasuredText').textContent=measurements.join(' · ')||'Noch keine Messwerte eingetragen.';
+  $('pModelText').textContent=models.join(' · ')||'Noch keine Übergänge zugeordnet.';
+  $('pSpectrum').setAttribute('aria-label','Lineare Skala 400 bis 700 nm. '+measurements.join('; '));
+  $('pLevels').setAttribute('aria-label','Lineare Energieniveaus n 2 bis 5. '+models.join('; '));
+  $('pWhyText').textContent=readText('pWhy','Noch nicht formuliert.');
+  $('pLimitText').textContent=readText('pLimit','Noch nicht formuliert.');
+  $('pDecisionText').textContent=readText('pDecision','Noch nicht entschieden.');
+  const complete=wavelengths.every(n=>n!==null)&&transitions.every(Boolean)&&new Set(transitions).size===3&&['pWhy','pLimit','pDecision'].every(id=>$(id).value.trim());
+  $('pStatus').textContent=complete?'Alle Felder sind belegt. Prüfe deine Rechnung und sichere das Panel als PDF.':'Vorschau aktualisiert. Trage drei Werte zwischen 400 und 700 nm, drei verschiedene Übergänge, Erklärung, Grenze und Entscheidung ein.';
+ }
+ indices.forEach(i=>{$('pL'+i).addEventListener('input',updatePanel);$('pT'+i).addEventListener('change',updatePanel);});
+ ['pWhy','pLimit','pDecision'].forEach(id=>$(id).addEventListener('input',updatePanel));
+ $('pUpdate').addEventListener('click',updatePanel);
+ $('pPrint').addEventListener('click',()=>{updatePanel();document.body.dataset.print='digital';window.print();});
+ updatePanel();
+})();
+
+</script>
+</body>
+</html>
