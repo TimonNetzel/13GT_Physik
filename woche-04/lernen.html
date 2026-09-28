@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wasserstoff-Spektrallinien</title>
+<style>
+:root{--bg:#f3f5f9;--card:#fff;--ink:#1b2130;--muted:#5b6475;--line:#dce1ea;--accent:#2d6cdf;--chip:#eef2f8;--abs:#2d6cdf;--em:#c9731f;--stage:#0e1522}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1118;--card:#151b26;--ink:#e4e9f2;--muted:#9aa5b8;--line:#263042;--accent:#5b93f0;--chip:#1e2634;--abs:#79a8f5;--em:#f0a35a;color-scheme:dark}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0d1118;--card:#151b26;--ink:#e4e9f2;--muted:#9aa5b8;--line:#263042;--accent:#5b93f0;--chip:#1e2634;--abs:#79a8f5;--em:#f0a35a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{max-width:1200px;margin:0 auto;padding:18px 16px 6px}
+h1{font-size:1.35rem;margin:0;line-height:1.25}
+.sub{margin:.25rem 0 0;color:var(--muted)}
+.grid{max-width:1200px;margin:0 auto;padding:8px 16px 32px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.wide{grid-column:1/-1}
+@media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;min-width:0}
+.cardhead{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.cardhead h2{margin:0}
+h2{font-size:1.05rem;margin:0 0 10px}
+h3{font-size:.88rem;margin:16px 0 6px;color:var(--muted);font-weight:600}
+.stage{display:block;width:100%;height:auto;background:var(--stage);border-radius:10px}
+svg text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+#spec{max-width:720px;margin:0 auto}
+.note{font-size:.8rem;color:var(--muted);margin:.5rem 0 0}
+.pill{font-size:.78rem;background:var(--chip);border-radius:999px;padding:3px 10px;color:var(--muted)}
+.status{background:var(--chip);border-radius:10px;padding:8px 10px;margin-bottom:12px;font-weight:600}
+input[type=range]{width:100%;accent-color:var(--accent);margin:4px 0 8px}
+.lbl{font-size:.85rem;color:var(--muted)}
+.inputs{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap}
+.inputs label{display:flex;flex-direction:column;font-size:.8rem;color:var(--muted);gap:3px}
+.inputs input{width:112px;padding:7px 8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit}
+.swatch{width:44px;height:36px;border-radius:8px;border:1px solid var(--line)}
+.preview{font-size:.88rem;color:var(--muted);margin:8px 0 12px}
+.btn{border:1px solid var(--line);background:var(--chip);color:var(--ink);border-radius:10px;padding:8px 12px;font:inherit;cursor:pointer}
+.btn.primary{background:var(--accent);color:#fff;border-color:transparent;width:100%;padding:11px;font-weight:600}
+.btn:disabled,.chip:disabled{opacity:.45;cursor:default}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--chip);color:var(--ink);border-radius:999px;padding:6px 11px;font:inherit;font-size:.84rem;cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+.tag{border:1px solid var(--line);border-radius:999px;padding:3px 9px;font-size:.78rem;display:inline-flex;gap:5px;align-items:center;color:var(--muted)}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex:none;border:1px solid rgba(128,128,128,.35)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{border:0;background:transparent;padding:7px 12px;font:inherit;font-size:.85rem;color:var(--ink);cursor:pointer}
+.seg button.on{background:var(--accent);color:#fff}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:16px;padding-top:12px;border-top:1px solid var(--line)}
+.check{display:flex;gap:8px;align-items:center;font-size:.88rem}
+.hint{font-size:.85rem;color:var(--muted);margin:6px 0 0}
+.calcTitle{font-weight:700;margin-bottom:8px}
+.calcTitle.abs{color:var(--abs)} .calcTitle.em{color:var(--em)}
+.eq{font-family:ui-monospace,"Cascadia Mono",Consolas,monospace;font-size:.88rem;padding:4px 0;border-bottom:1px dashed var(--line);overflow-wrap:anywhere}
+.result{display:flex;align-items:center;gap:12px;margin-top:12px;padding:10px;border-radius:10px;background:var(--chip);font-weight:600}
+.bigswatch{width:52px;height:32px;border-radius:6px;flex:none;border:1px solid var(--line)}
+.expl{font-size:.88rem;margin:10px 0 0}
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.85rem}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+th{color:var(--muted);font-weight:600}
+details.hints summary{cursor:pointer;font-weight:600}
+details.hints ol{margin:.6rem 0 0;padding-left:1.3rem}
+details.hints li{margin:.3rem 0}
+.flash{animation:flash .6s ease-in-out 3}
+@keyframes flash{0%,100%{opacity:1}50%{opacity:.25}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Wasserstoffatom: Energieniveaus und Spektrallinien</h1>
+  <p class="sub">Bohr'sches Schalenmodell · Energieniveauschema · Absorption und Emission</p>
+</header>
+
+<main class="grid">
+  <details class="card wide hints">
+    <summary>Arbeitshinweise und Bedienung</summary>
+    <ol>
+      <li>Das Elektron startet im Grundzustand (n = 1). Ein Photon mit 5 eV einstrahlen. Was passiert – und warum?</li>
+      <li>Über die Schnellwahl das Elektron auf n = 4 anheben und im Automatikmodus mehrmals beobachten: Auf welchen Wegen gelangt es zurück nach n = 1? Welche Photonen entstehen dabei?</li>
+      <li>Im Schrittmodus alle sichtbaren Linien erzeugen (Übergänge nach n = 2). ΔE, λ und Farbe notieren und die Rechnung selbst nachvollziehen.</li>
+      <li>Emissions- und Absorptionsspektrum vergleichen. Warum liefert Absorption aus dem Grundzustand nur UV-Linien?</li>
+      <li>Welche Mindestenergie braucht ein Photon, um das Atom aus n = 1 bzw. aus n = 2 zu ionisieren?</li>
+    </ol>
+    <p class="note">Bedienung: Photonenenergie mit dem Regler oder als Zahl (in eV oder nm) eingeben und „Photon einstrahlen“ tippen. Absorbiert wird nur, wenn die Energie auf ±0,01 eV genau zu einer Energiedifferenz passt. Die Rechnung verwendet λ ≈ 1240 eV·nm / ΔE mit ungerundeten Zwischenwerten.</p>
+  </details>
+
+  <section class="card">
+    <div class="cardhead"><h2>Schalenmodell (Bohr)</h2><span class="pill" id="pill"></span></div>
+    <svg id="shell" class="stage" viewBox="0 0 400 420" role="img" aria-label="Schalenmodell des Wasserstoffatoms"></svg>
+    <p class="note">Radien nicht maßstabsgetreu (real wachsen sie mit n²: r<sub>n</sub> = n² · 0,053 nm). Gestrichelte Photonen sind unsichtbar (UV oder IR).</p>
+  </section>
+
+  <section class="card">
+    <div class="cardhead"><h2>Energieniveauschema</h2></div>
+    <svg id="levels" class="stage" viewBox="0 0 400 420" role="img" aria-label="Energieniveauschema"></svg>
+    <p class="note">↑ Absorption · ↓ Emission · Achse zwischen n = 1 und n = 2 unterbrochen. E<sub>n</sub> = −13,6 eV / n²</p>
+  </section>
+
+  <section class="card">
+    <h2>Energie zuführen</h2>
+    <div class="status" id="status"></div>
+    <span class="lbl">Photonenenergie</span>
+    <input type="range" id="eSlider" min="0.1" max="16" step="0.01" value="10.2" aria-label="Photonenenergie in eV">
+    <div class="inputs">
+      <label>E in eV<input type="number" id="eNum" min="0.1" max="16" step="0.01"></label>
+      <label>λ in nm<input type="number" id="lNum" min="77.5" max="12400" step="0.1"></label>
+      <div class="swatch" id="swatch" title="Farbe des Photons"></div>
+    </div>
+    <div class="preview" id="preview"></div>
+    <button class="btn primary" id="sendBtn">Photon einstrahlen</button>
+
+    <h3>Schnellwahl: passende Photonen</h3>
+    <div class="chips" id="quick"></div>
+
+    <h3>Emission (Zurückfallen)</h3>
+    <div class="seg" id="modeSeg"><button data-mode="auto" class="on">Automatisch</button><button data-mode="step">Schrittmodus</button></div>
+    <div class="chips" id="stepBtns" style="margin-top:8px"></div>
+
+    <div class="row">
+      <label class="check"><input type="checkbox" id="extToggle" checked> n = 6 und Ionisierung</label>
+      <button class="btn" id="resetBtn">Atom zurücksetzen</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Rechnung</h2>
+    <div id="calc"></div>
+  </section>
+
+  <section class="card wide">
+    <div class="cardhead">
+      <h2>Spektrum</h2>
+      <div class="seg" id="specSeg"><button data-s="log" class="on">Gesamt (UV bis IR)</button><button data-s="vis">Nur sichtbar</button></div>
+    </div>
+    <svg id="spec" class="stage" viewBox="0 0 520 200" role="img" aria-label="Emissions- und Absorptionsspektrum"></svg>
+    <div class="chips" id="lineChips" style="margin-top:10px"></div>
+    <div style="margin-top:10px"><button class="btn" id="clearSpec">Spektrum leeren</button></div>
+    <p class="note">Gesamtansicht mit logarithmischer Wellenlängenachse, damit UV-, sichtbare und IR-Linien gleichzeitig Platz haben.</p>
+  </section>
+
+  <section class="card wide">
+    <h2>Verlauf</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Nr.</th><th>Vorgang</th><th>Übergang</th><th>Photonenenergie</th><th>λ</th><th>Bereich / Farbe</th></tr></thead>
+        <tbody id="logBody"><tr><td colspan="6" style="color:var(--muted)">Noch keine Vorgänge.</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<script>
+(() => {
+const E0 = 13.6, HC = 1240, H = 4.135667e-15, TOL = 0.01;
+const NS = 'http://www.w3.org/2000/svg';
+const SHELL = ['K','L','M','N','O','P'];
+const st = { n:1, maxN:6, ion:true, mode:'auto', busy:false, E:10.2 };
+const $ = id => document.getElementById(id);
+const En = n => n === Infinity ? 0 : -E0/(n*n);
+const lam = E => HC/E;
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const ease = k => k < .5 ? 2*k*k : 1 - Math.pow(-2*k+2, 2)/2;
+
+function el(tag, attrs = {}, parent){
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function num(x, d = 2){
+  const r = +x.toFixed(d);
+  const s = Math.abs(r).toLocaleString('de-DE', {minimumFractionDigits:d, maximumFractionDigits:d});
+  return (r < 0 ? '−' : '') + s;
+}
+const nm = l => num(l, 1);
+const nL = n => n === Infinity ? '∞' : String(n);
+function sci(x){
+  const e = Math.floor(Math.log10(x));
+  return num(x/Math.pow(10,e), 2) + ' · 10<sup>' + e + '</sup>';
+}
+function animate(dur, fn){
+  return new Promise(res => {
+    const t0 = performance.now();
+    function step(t){ const k = Math.min(1, (t - t0)/dur); fn(k); if (k < 1) requestAnimationFrame(step); else res(); }
+    requestAnimationFrame(step);
+  });
+}
+
+/* ---------- Farbe aus Wellenlänge ---------- */
+function colorInfo(l){
+  if (l < 380) return {css:'#b99cff', vis:false, range:'Ultraviolett (UV)', name:'unsichtbar'};
+  if (l > 780) return {css:'#e0604f', vis:false, range:'Infrarot (IR)', name:'unsichtbar'};
+  let r, g, b;
+  if (l < 440){ r = -(l-440)/60; g = 0; b = 1; }
+  else if (l < 490){ r = 0; g = (l-440)/50; b = 1; }
+  else if (l < 510){ r = 0; g = 1; b = -(l-510)/20; }
+  else if (l < 580){ r = (l-510)/70; g = 1; b = 0; }
+  else if (l < 645){ r = 1; g = -(l-645)/65; b = 0; }
+  else { r = 1; g = 0; b = 0; }
+  const fct = l < 420 ? .3 + .7*(l-380)/40 : l > 700 ? .3 + .7*(780-l)/80 : 1;
+  const c = v => Math.round(255*Math.pow(v*fct, .8));
+  let name = 'rot';
+  if (l < 450) name = 'violett'; else if (l < 485) name = 'blau'; else if (l < 500) name = 'blaugrün (türkis)';
+  else if (l < 565) name = 'grün'; else if (l < 590) name = 'gelb'; else if (l < 625) name = 'orange';
+  return {css:`rgb(${c(r)},${c(g)},${c(b)})`, vis:true, range:'sichtbares Licht', name};
+}
+const swatchBg = ci => ci.vis ? ci.css : `repeating-linear-gradient(45deg, ${ci.css} 0 5px, transparent 5px 10px)`;
+const rangeText = ci => ci.vis ? `sichtbar · ${ci.name}` : `${ci.range} · unsichtbar`;
+
+/* ---------- Schalenmodell ---------- */
+const shell = $('shell'), CX = 200, CY = 215;
+const gOrb = el('g', {}, shell), gFx = el('g', {}, shell), gPh = el('g', {}, shell);
+const eG = el('g', {}, shell);
+el('circle', {r:13, fill:'#58a6ff', opacity:.25}, eG);
+el('circle', {r:6.5, fill:'#9fd0ff', stroke:'#fff', 'stroke-width':1}, eG);
+const cap = el('text', {x:200, y:20, 'text-anchor':'middle', fill:'#e8eef8', 'font-size':13, 'font-weight':600}, shell);
+const leg = el('text', {x:12, y:410, 'font-size':11, fill:'#8e9bb0'}, shell);
+leg.innerHTML = '<tspan fill="#9fd0ff">●</tspan> Elektron   <tspan fill="#e0564a">●</tspan> Kern (Proton)';
+let orbitEls = [];
+const R = n => n === Infinity ? 300 : 28*n;
+
+function drawOrbits(){
+  gOrb.innerHTML = ''; orbitEls = [];
+  for (let n = 1; n <= st.maxN; n++){
+    orbitEls[n] = el('circle', {cx:CX, cy:CY, r:R(n), fill:'none', stroke:'#3a4a63', 'stroke-width':1.3}, gOrb);
+    const t = el('text', {x:CX, y:CY-R(n)-4, 'text-anchor':'middle', 'font-size':10.5, fill:'#8e9bb0'}, gOrb);
+    t.textContent = `n = ${n} (${SHELL[n-1]})`;
+  }
+  el('circle', {cx:CX, cy:CY, r:9, fill:'#e0564a'}, gOrb);
+  const p = el('text', {x:CX, y:CY+4.5, 'text-anchor':'middle', 'font-size':13, fill:'#fff', 'font-weight':700}, gOrb);
+  p.textContent = '+';
+}
+
+let ang = -Math.PI/2, rD = R(1), eOp = 1, last = performance.now();
+const ePos = () => ({x: CX + rD*Math.cos(ang), y: CY + rD*Math.sin(ang)});
+function frame(t){
+  const dt = Math.min(.05, (t - last)/1000); last = t;
+  if (st.n !== Infinity) ang += (2.2/(rD/28))*dt;
+  const p = ePos();
+  eG.setAttribute('transform', `translate(${p.x.toFixed(2)},${p.y.toFixed(2)})`);
+  eG.setAttribute('opacity', eOp);
+  requestAnimationFrame(frame);
+}
+
+function jump(n, m){
+  const r0 = rD, r1 = R(m), o0 = eOp, o1 = m === Infinity ? 0 : 1;
+  return animate(750, k => { const e = ease(k); rD = r0 + (r1 - r0)*e; eOp = o0 + (o1 - o0)*e; });
+}
+function pulse(color){
+  const p = ePos();
+  const c = el('circle', {cx:p.x, cy:p.y, r:6, fill:'none', stroke:color, 'stroke-width':2.5}, gFx);
+  animate(650, k => { c.setAttribute('r', 6 + 20*k); c.setAttribute('opacity', 1 - k); }).then(() => c.remove());
+}
+function makePhoton(l, ci){
+  const g = el('g', {}, gPh);
+  const k = Math.max(5, Math.min(20, l/35));
+  let d = '';
+  for (let x = -36; x <= 36.01; x += 1.5){
+    const env = Math.cos(x/36*Math.PI/2);
+    const y = 7*env*Math.sin(2*Math.PI*x/k);
+    d += (x === -36 ? 'M' : 'L') + x.toFixed(1) + ' ' + y.toFixed(2);
+  }
+  const attrs = {d, fill:'none', stroke:ci.css, 'stroke-width':2.4, 'stroke-linecap':'round'};
+  if (!ci.vis) attrs['stroke-dasharray'] = '3 3';
+  el('path', attrs, g);
+  return g;
+}
+async function flyPhoton(l, ci, from, to, dur){
+  const g = makePhoton(l, ci);
+  await animate(dur, k => {
+    const a = from(), b = to();
+    const x = a.x + (b.x - a.x)*k, y = a.y + (b.y - a.y)*k;
+    const deg = Math.atan2(b.y - a.y, b.x - a.x)*180/Math.PI;
+    g.setAttribute('transform', `translate(${x.toFixed(1)},${y.toFixed(1)}) rotate(${deg.toFixed(1)})`);
+  });
+  g.remove();
+}
+const caption = s => { cap.textContent = s; };
+
+/* ---------- Energieniveauschema ---------- */
+const lv = $('levels');
+const gL = el('g', {}, lv), gA = el('g', {}, lv);
+const marker = el('circle', {r:6.5, fill:'#9fd0ff', stroke:'#fff', 'stroke-width':1.2}, lv);
+const X0 = 80, X1 = 290;
+const yE = E => E < -5 ? 392 : 52 + (-E)/3.7*280;
+const yN = n => n === Infinity ? 30 : yE(En(n));
+const slots = []; for (let x = X0 + 16; x <= X1 - 10; x += 20) slots.push(x);
+let slot = 0, mX = slots[0], mY = yN(1);
+let levelEls = [];
+function placeMarker(){ marker.setAttribute('cx', mX); marker.setAttribute('cy', mY); }
+
+function drawLevels(){
+  gL.innerHTML = ''; levelEls = [];
+  el('line', {x1:42, y1:408, x2:42, y2:16, stroke:'#6b7890', 'stroke-width':1.5}, gL);
+  el('polygon', {points:'42,8 37,18 47,18', fill:'#6b7890'}, gL);
+  const tE = el('text', {x:52, y:18, fill:'#9fb2d0', 'font-size':13, 'font-style':'italic'}, gL); tE.textContent = 'E';
+  el('rect', {x:36, y:338, width:12, height:16, fill:'#0e1522'}, gL);
+  el('line', {x1:35, y1:342, x2:49, y2:336, stroke:'#6b7890', 'stroke-width':1.5}, gL);
+  el('line', {x1:35, y1:356, x2:49, y2:350, stroke:'#6b7890', 'stroke-width':1.5}, gL);
+  if (st.ion){
+    el('rect', {x:X0, y:10, width:X1-X0, height:42, fill:'#5b93f0', opacity:.12}, gL);
+    const t = el('text', {x:(X0+X1)/2, y:24, 'text-anchor':'middle', 'font-size':10.5, fill:'#9fb2d0'}, gL);
+    t.textContent = 'Kontinuum: freies Elektron';
+    el('line', {x1:X0, y1:52, x2:X1, y2:52, stroke:'#8ea4c8', 'stroke-width':1.3, 'stroke-dasharray':'5 4'}, gL);
+    const a = el('text', {x:X0-6, y:56, 'text-anchor':'end', 'font-size':11, fill:'#b8c6dc'}, gL); a.textContent = 'n → ∞';
+    const b = el('text', {x:X1+6, y:56, 'font-size':11, fill:'#b8c6dc'}, gL); b.textContent = '0 eV';
+  }
+  for (let n = 1; n <= st.maxN; n++){
+    const y = yN(n);
+    levelEls[n] = el('line', {x1:X0, y1:y, x2:X1, y2:y, stroke:'#6f7f99', 'stroke-width':2}, gL);
+    const a = el('text', {x:X0-6, y:y+4, 'text-anchor':'end', 'font-size':11, fill:'#b8c6dc'}, gL); a.textContent = `n = ${n}`;
+    const b = el('text', {x:X1+6, y:y+4, 'font-size':11, fill:'#b8c6dc'}, gL); b.textContent = `${num(En(n))} eV`;
+  }
+}
+
+async function arrow(n, m, ci, dE){
+  slot++;
+  if (slot >= slots.length){ gA.innerHTML = ''; slot = 0; }
+  [...gA.children].forEach(c => c.setAttribute('opacity', .3));
+  const x = slots[slot], y1 = yN(n), y2 = yN(m);
+  const dir = Math.sign(y2 - y1), len = Math.abs(y2 - y1) - 8;
+  const g = el('g', {}, gA);
+  const line = el('line', {x1:x, y1:y1, x2:x, y2:y2 - dir*8, stroke:ci.css, 'stroke-width':2.6,
+    'stroke-dasharray':len, 'stroke-dashoffset':len}, g);
+  const head = el('polygon', {points:`${x},${y2} ${x-5},${y2-dir*10} ${x+5},${y2-dir*10}`, fill:ci.css, opacity:0}, g);
+  if (Math.abs(y2 - y1) > 46){
+    const my = (y1 + y2)/2;
+    const t = el('text', {x:x-6, y:my, transform:`rotate(-90 ${x-6} ${my})`, 'text-anchor':'middle', 'font-size':9.5, fill:'#dfe7f3'}, g);
+    t.textContent = `${num(dE)} eV`;
+  }
+  const sx = mX, sy = mY;
+  await animate(250, k => { const e = ease(k); mX = sx + (x - sx)*e; mY = sy + (y1 - sy)*e; placeMarker(); });
+  await animate(650, k => { const e = ease(k); line.setAttribute('stroke-dashoffset', len*(1-e)); mY = y1 + (y2 - y1)*e; placeMarker(); });
+  head.setAttribute('opacity', 1);
+  if (!ci.vis){ line.setAttribute('stroke-dasharray', '5 4'); line.setAttribute('stroke-dashoffset', 0); }
+}
+
+/* ---------- Spektrum ---------- */
+const sp = $('spec');
+const lines = new Map();
+let specMode = 'log', newestKey = null;
+const SXL = 16, SXR = 504;
+function xOf(l){
+  if (specMode === 'log'){ const a = Math.log10(80), b = Math.log10(8000); return SXL + (Math.log10(l) - a)/(b - a)*(SXR - SXL); }
+  return SXL + (l - 380)/400*(SXR - SXL);
+}
+const inRange = l => specMode === 'log' ? (l >= 80 && l <= 8000) : (l >= 380 && l <= 780);
+
+function addLine(kind, n, m, dE){
+  const key = `${kind}|${nL(n)}-${m}`;
+  const l = lam(dE);
+  lines.set(key, {kind, n, m, l, dE, ci:colorInfo(l)});
+  newestKey = key;
+  renderSpectrum();
+}
+function txt(parent, x, y, s, attrs = {}){
+  const t = el('text', Object.assign({x, y, 'font-size':12, fill:'#b8c6dc'}, attrs), parent); t.textContent = s; return t;
+}
+function renderSpectrum(){
+  sp.innerHTML = '';
+  const defs = el('defs', {}, sp);
+  const grad = el('linearGradient', {id:'visGrad', x1:0, y1:0, x2:1, y2:0}, defs);
+  const xa = xOf(380), xb = xOf(780);
+  for (let l = 380; l <= 780; l += 10){
+    el('stop', {offset:((xOf(l) - xa)/(xb - xa)).toFixed(4), 'stop-color':colorInfo(l).css}, grad);
+  }
+  txt(sp, SXL, 16, 'Emissionsspektrum (helle Linien)', {'font-size':12.5, fill:'#dfe7f3'});
+  el('rect', {x:SXL, y:22, width:SXR-SXL, height:44, fill:'#04060a', stroke:'#2a3446', rx:4}, sp);
+  txt(sp, SXL, 88, 'Absorptionsspektrum (dunkle Linien)', {'font-size':12.5, fill:'#dfe7f3'});
+  el('rect', {x:SXL, y:94, width:SXR-SXL, height:44, fill:'#3b414d', rx:4}, sp);
+  el('rect', {x:xa, y:94, width:xb-xa, height:44, fill:'url(#visGrad)'}, sp);
+
+  el('line', {x1:SXL, y1:146, x2:SXR, y2:146, stroke:'#6b7890'}, sp);
+  const ticks = specMode === 'log' ? [100,200,500,1000,2000,5000] : [400,450,500,550,600,650,700,750];
+  ticks.forEach(t => {
+    const x = xOf(t);
+    el('line', {x1:x, y1:146, x2:x, y2:151, stroke:'#6b7890'}, sp);
+    txt(sp, x, 164, t.toLocaleString('de-DE'), {'text-anchor':'middle', 'font-size':11});
+  });
+  txt(sp, SXR, 164, 'nm', {'text-anchor':'end', 'font-size':11, fill:'#8e9bb0'}).setAttribute('dy', 14);
+  if (specMode === 'log'){
+    [380, 780].forEach(l => {
+      el('line', {x1:xOf(l), y1:22, x2:xOf(l), y2:66, stroke:'#56627a', 'stroke-dasharray':'2 3'}, sp);
+    });
+    txt(sp, (SXL + xa)/2, 190, 'UV', {'text-anchor':'middle', fill:'#b99cff'});
+    txt(sp, (xa + xb)/2, 190, 'sichtbar', {'text-anchor':'middle', fill:'#dfe7f3'});
+    txt(sp, (xb + SXR)/2, 190, 'IR', {'text-anchor':'middle', fill:'#e0604f'});
+  }
+
+  let outside = 0;
+  lines.forEach((ln, key) => {
+    if (!inRange(ln.l)){ outside++; return; }
+    const x = xOf(ln.l);
+    const g = el('g', {}, sp);
+    const tt = el('title', {}, g); tt.textContent = `${nm(ln.l)} nm (${nL(ln.n)} → ${ln.m})`;
+    if (ln.kind === 'em'){
+      const a = {x1:x, y1:24, x2:x, y2:64, stroke:ln.ci.css, 'stroke-width':specMode === 'log' ? 3 : 4};
+      if (!ln.ci.vis) a['stroke-dasharray'] = '4 3';
+      el('line', a, g);
+    } else {
+      el('line', {x1:x, y1:94, x2:x, y2:138, stroke:'#000', 'stroke-width':specMode === 'log' ? 3 : 4}, g);
+    }
+    if (key === newestKey) g.setAttribute('class', 'flash');
+  });
+  if (lines.size === 0){
+    txt(sp, (SXL + SXR)/2, 49, 'Noch keine Linien – Atom anregen', {'text-anchor':'middle', fill:'#6b7890'});
+  }
+  if (specMode === 'vis' && outside > 0){
+    txt(sp, (SXL + SXR)/2, 190, `${outside} Linie(n) außerhalb (UV/IR) – Ansicht „Gesamt“ zeigt alle`, {'text-anchor':'middle', 'font-size':11, fill:'#8e9bb0'});
+  }
+  renderLineChips();
+}
+function renderLineChips(){
+  const box = $('lineChips');
+  const arr = [...lines.values()].sort((a, b) => a.l - b.l);
+  box.innerHTML = arr.length ? arr.map(ln =>
+    `<span class="tag"><span class="dot" style="background:${swatchBg(ln.ci)}"></span>${nm(ln.l)} nm · ${nL(ln.n)} → ${ln.m} · ${ln.kind === 'em' ? 'Emission' : 'Absorption'}</span>`
+  ).join('') : '';
+}
+
+/* ---------- Rechnung ---------- */
+const calc = $('calc');
+const Esub = n => `E<sub>${nL(n)}</sub>`;
+function eqLevel(n){
+  if (n === Infinity) return `<div class="eq">${Esub(n)} = 0 eV (Elektron frei)</div>`;
+  return `<div class="eq">${Esub(n)} = −13,6 eV / ${n}² = ${num(En(n))} eV</div>`;
+}
+function eqWave(E){
+  const l = lam(E), ci = colorInfo(l);
+  return `<div class="eq">λ = h·c / E ≈ 1240 eV·nm / ${num(E)} eV = <b>${nm(l)} nm</b></div>
+    <div class="eq">f = E / h = ${num(E)} eV / (4,136 · 10<sup>−15</sup> eV·s) = ${sci(E/H)} Hz</div>
+    <div class="result"><span class="bigswatch" style="background:${swatchBg(ci)}"></span><span>${ci.vis ? `Sichtbares Licht: ${ci.name}` : `${ci.range}: für das Auge unsichtbar`}</span></div>`;
+}
+function calcIntro(){
+  calc.innerHTML = `<p class="expl">Noch kein Übergang. Ein Photon einstrahlen oder die Schnellwahl nutzen – hier erscheint dann die vollständige Rechnung.</p>
+  <div class="eq">E<sub>n</sub> = −13,6 eV / n²</div>
+  <div class="eq">ΔE = E<sub>oben</sub> − E<sub>unten</sub> = h·f</div>
+  <div class="eq">λ = h·c / ΔE ≈ 1240 eV·nm / ΔE</div>`;
+}
+function calcAbsorb(n, m, E){
+  const dE = En(m) - En(n);
+  calc.innerHTML = `<div class="calcTitle abs">Absorption: n = ${n} → n = ${m}</div>
+    ${eqLevel(n)}${eqLevel(m)}
+    <div class="eq">ΔE = ${Esub(m)} − ${Esub(n)} = ${num(En(m))} eV − (${num(En(n))} eV) = <b>${num(dE)} eV</b></div>
+    ${eqWave(dE)}
+    <p class="expl">Das Photon hatte ${num(E)} eV und passt zur Energiedifferenz ΔE. Es wird absorbiert, das Elektron springt von n = ${n} auf n = ${m} (nach außen).</p>`;
+}
+function calcEmit(n, m){
+  const dE = En(n) - En(m);
+  calc.innerHTML = `<div class="calcTitle em">${n === Infinity ? 'Einfang (Rekombination)' : 'Emission'}: n = ${nL(n)} → n = ${m}</div>
+    ${eqLevel(n)}${eqLevel(m)}
+    <div class="eq">E<sub>Photon</sub> = ${Esub(n)} − ${Esub(m)} = ${num(En(n))} eV − (${num(En(m))} eV) = <b>${num(dE)} eV</b></div>
+    ${eqWave(dE)}
+    <p class="expl">${n === Infinity ? 'Ein freies Elektron (Bewegungsenergie ≈ 0 angenommen) wird eingefangen.' : 'Das Elektron fällt auf ein tieferes Niveau zurück.'} Die frei werdende Energie wird als Photon mit ${num(dE)} eV ausgesendet.</p>`;
+}
+function calcIon(n, E, Ekin){
+  const Ei = -En(n);
+  calc.innerHTML = `<div class="calcTitle abs">Ionisierung aus n = ${n}</div>
+    ${eqLevel(n)}
+    <div class="eq">E<sub>ion</sub> = 0 eV − (${num(En(n))} eV) = <b>${num(Ei)} eV</b></div>
+    <div class="eq">E<sub>Photon</sub> = ${num(E)} eV ≥ ${num(Ei)} eV → Elektron wird frei</div>
+    <div class="eq">E<sub>kin</sub> = E<sub>Photon</sub> − E<sub>ion</sub> = ${num(E)} eV − ${num(Ei)} eV = <b>${num(Ekin)} eV</b></div>
+    ${eqWave(E)}
+    <p class="expl">Oberhalb der Ionisierungsenergie wird jede Photonenenergie absorbiert, denn freie Elektronen können beliebige Bewegungsenergie haben. Das Atom ist jetzt ionisiert (H⁺).</p>`;
+}
+function calcMiss(n, E){
+  const l = lam(E);
+  let body = `<div class="calcTitle">Keine Absorption</div>
+    <div class="eq">E<sub>Photon</sub> = ${num(E)} eV (λ = ${nm(l)} nm)</div>`;
+  if (n === Infinity){
+    body += `<p class="expl">Das Atom ist ionisiert – es gibt kein gebundenes Elektron, das das Photon aufnehmen könnte. Das Photon fliegt weiter.</p>`;
+  } else {
+    body += `<p class="expl">Mögliche Absorptionsenergien aus n = ${n}:</p>`;
+    for (let m = n + 1; m <= st.maxN; m++){
+      body += `<div class="eq">n = ${n} → ${m}: ΔE = ${num(En(m) - En(n))} eV</div>`;
+    }
+    if (st.ion) body += `<div class="eq">Ionisierung: ab ${num(-En(n))} eV</div>`;
+    if (n === st.maxN && !st.ion) body += `<div class="eq">Höchstes dargestelltes Niveau erreicht.</div>`;
+    body += `<p class="expl">Keine dieser Energien passt (Toleranz ±0,01 eV). Das Photon wird nicht absorbiert und fliegt durch das Atom hindurch.</p>`;
+  }
+  calc.innerHTML = body;
+}
+
+/* ---------- Verlauf ---------- */
+let logN = 0;
+function log(kind, trans, E){
+  const tb = $('logBody');
+  if (logN === 0) tb.innerHTML = '';
+  logN++;
+  const l = lam(E), ci = colorInfo(l);
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td>${logN}</td><td>${kind}</td><td>${trans}</td><td>${num(E)} eV</td><td>${nm(l)} nm</td>
+    <td><span class="dot" style="background:${swatchBg(ci)}"></span> ${rangeText(ci)}</td>`;
+  tb.prepend(tr);
+  while (tb.children.length > 15) tb.lastChild.remove();
+}
+
+/* ---------- Abläufe ---------- */
+function findMatch(E){
+  if (st.n === Infinity) return null;
+  for (let m = st.n + 1; m <= st.maxN; m++) if (Math.abs(En(m) - En(st.n) - E) <= TOL) return m;
+  return null;
+}
+
+async function absorb(E){
+  if (st.busy) return;
+  st.busy = true; updateUI();
+  const n = st.n, l = lam(E), ci = colorInfo(l);
+  const m = findMatch(E);
+  const ionOK = !m && st.ion && n !== Infinity && E >= -En(n) - TOL;
+  caption(`Photon: ${num(E)} eV · ${nm(l)} nm`);
+  const start = {x:-40, y:CY + (Math.random()*180 - 90)};
+  let excited = false;
+  if (m){
+    await flyPhoton(l, ci, () => start, ePos, 900);
+    pulse(ci.css);
+    const dE = En(m) - En(n);
+    await Promise.all([jump(n, m), arrow(n, m, ci, dE)]);
+    st.n = m; excited = true;
+    addLine('abs', n, m, dE);
+    log('Absorption', `${n} → ${m}`, dE);
+    calcAbsorb(n, m, E);
+    caption(`Absorbiert: ΔE = ${num(dE)} eV`);
+  } else if (ionOK){
+    await flyPhoton(l, ci, () => start, ePos, 900);
+    pulse(ci.css);
+    const Ekin = Math.max(0, E + En(n));
+    await Promise.all([jump(n, Infinity), arrow(n, Infinity, ci, -En(n))]);
+    st.n = Infinity; excited = true;
+    log('Ionisierung', `${n} → ∞`, E);
+    calcIon(n, E, Ekin);
+    caption('Elektron frei – Atom ionisiert');
+  } else {
+    const end = {x:440, y:2*CY - start.y};
+    await flyPhoton(l, ci, () => start, () => end, 1400);
+    log('keine Absorption', `bleibt in ${nL(n)}`, E);
+    calcMiss(n, E);
+    caption('Nicht absorbiert – Energie passt nicht');
+  }
+  st.busy = false; updateUI();
+  if (excited && st.mode === 'auto') cascade();
+}
+
+async function emit(m){
+  const n = st.n;
+  const dE = En(n) - En(m), l = lam(dE), ci = colorInfo(l);
+  caption(`Emission: ${num(dE)} eV · ${nm(l)} nm`);
+  if (n === Infinity){
+    ang = -Math.PI/4 + Math.random()*Math.PI/2; rD = R(Infinity); eOp = 0;
+    await Promise.all([jump(n, m), arrow(n, m, ci, dE)]);
+    const p0 = ePos(), dir = Math.atan2(p0.y - CY, p0.x - CX);
+    await flyPhoton(l, ci, () => p0, () => ({x:CX + 300*Math.cos(dir), y:CY + 300*Math.sin(dir)}), 900);
+  } else {
+    const p0 = ePos(), dir = Math.atan2(p0.y - CY, p0.x - CX);
+    pulse(ci.css);
+    await Promise.all([
+      jump(n, m), arrow(n, m, ci, dE),
+      flyPhoton(l, ci, () => p0, () => ({x:CX + 300*Math.cos(dir), y:CY + 300*Math.sin(dir)}), 1000)
+    ]);
+  }
+  st.n = m;
+  addLine('em', n, m, dE);
+  log(n === Infinity ? 'Einfang (Emission)' : 'Emission', `${nL(n)} → ${m}`, dE);
+  calcEmit(n, m);
+}
+
+async function cascade(){
+  if (st.busy) return;
+  st.busy = true; updateUI();
+  while (st.mode === 'auto' && st.n !== 1){
+    await sleep(st.n === Infinity ? 1600 : 1300);
+    if (st.mode !== 'auto') break;
+    const top = st.n === Infinity ? st.maxN : st.n - 1;
+    const m = 1 + Math.floor(Math.random()*top);
+    await emit(m);
+    updateUI();
+  }
+  st.busy = false; updateUI();
+}
+
+async function stepEmit(m){
+  if (st.busy) return;
+  st.busy = true; updateUI();
+  await emit(m);
+  st.busy = false; updateUI();
+}
+
+function resetAtom(){
+  if (st.busy) return;
+  st.n = 1; rD = R(1); eOp = 1;
+  gA.innerHTML = ''; slot = 0; mX = slots[0]; mY = yN(1); placeMarker();
+  caption(''); calcIntro(); updateUI();
+}
+
+/* ---------- Eingaben ---------- */
+const slider = $('eSlider'), eNum = $('eNum'), lNum = $('lNum');
+function setE(E, src){
+  if (!isFinite(E) || E <= 0) return;
+  st.E = E;
+  if (src !== 'slider') slider.value = Math.min(16, Math.max(.1, E));
+  if (src !== 'e') eNum.value = E.toFixed(2);
+  if (src !== 'l') lNum.value = lam(E).toFixed(1);
+  const l = lam(E), ci = colorInfo(l);
+  $('swatch').style.background = swatchBg(ci);
+  $('preview').innerHTML = `λ = ${nm(l)} nm · ${rangeText(ci)}`;
+}
+slider.addEventListener('input', () => setE(+slider.value, 'slider'));
+eNum.addEventListener('input', () => { const v = parseFloat(eNum.value.replace(',', '.')); if (v >= .1 && v <= 16) setE(v, 'e'); });
+lNum.addEventListener('input', () => { const v = parseFloat(lNum.value.replace(',', '.')); if (v >= 77.5 && v <= 12400) setE(HC/v, 'l'); });
+$('sendBtn').addEventListener('click', () => absorb(st.E));
+$('resetBtn').addEventListener('click', resetAtom);
+$('modeSeg').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  st.mode = b.dataset.mode;
+  updateUI();
+  if (st.mode === 'auto' && st.n !== 1 && !st.busy) cascade();
+});
+$('specSeg').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  specMode = b.dataset.s; newestKey = null;
+  [...$('specSeg').children].forEach(x => x.classList.toggle('on', x === b));
+  renderSpectrum();
+});
+$('clearSpec').addEventListener('click', () => { lines.clear(); newestKey = null; renderSpectrum(); });
+$('extToggle').addEventListener('change', e => {
+  if (st.busy){ e.target.checked = !e.target.checked; return; }
+  st.maxN = e.target.checked ? 6 : 5; st.ion = e.target.checked;
+  drawOrbits(); drawLevels();
+  if (st.n === Infinity || st.n > st.maxN) resetAtom(); else updateUI();
+});
+
+function chip(html, onClick, disabled){
+  const b = document.createElement('button');
+  b.className = 'chip'; b.innerHTML = html; b.disabled = disabled;
+  b.addEventListener('click', onClick);
+  return b;
+}
+
+function updateUI(){
+  const n = st.n;
+  const s = n === Infinity
+    ? 'Atom ionisiert – Elektron frei (E ≥ 0 eV)'
+    : `Elektron in n = ${n} (${SHELL[n-1]}-Schale) · E<sub>${n}</sub> = ${num(En(n))} eV · ${n === 1 ? 'Grundzustand' : 'angeregt'}`;
+  $('status').innerHTML = s;
+  $('pill').innerHTML = n === Infinity ? 'ionisiert' : `n = ${n} · ${num(En(n))} eV`;
+  orbitEls.forEach((c, i) => { if (!c) return; c.setAttribute('stroke', i === n ? '#6fa8ff' : '#3a4a63'); c.setAttribute('stroke-width', i === n ? 2.4 : 1.3); });
+  levelEls.forEach((c, i) => { if (!c) return; c.setAttribute('stroke', i === n ? '#9fd0ff' : '#6f7f99'); c.setAttribute('stroke-width', i === n ? 3 : 2); });
+
+  $('sendBtn').disabled = st.busy;
+  $('resetBtn').disabled = st.busy;
+  [...$('modeSeg').children].forEach(b => b.classList.toggle('on', b.dataset.mode === st.mode));
+
+  const q = $('quick'); q.innerHTML = '';
+  if (n === Infinity){
+    q.innerHTML = '<p class="hint">Das Elektron ist frei. Erst muss es wieder eingefangen werden (Emission).</p>';
+  } else {
+    for (let m = n + 1; m <= st.maxN; m++){
+      const dE = En(m) - En(n), ci = colorInfo(lam(dE));
+      q.appendChild(chip(`<span class="dot" style="background:${swatchBg(ci)}"></span>${n} → ${m} · ${num(dE)} eV · ${nm(lam(dE))} nm`,
+        () => { setE(dE); absorb(dE); }, st.busy));
+    }
+    if (st.ion){
+      const Ei = -En(n), ci = colorInfo(lam(Ei));
+      q.appendChild(chip(`<span class="dot" style="background:${swatchBg(ci)}"></span>Ionisieren · ab ${num(Ei)} eV`,
+        () => { setE(Ei); absorb(Ei); }, st.busy));
+    }
+    if (n === st.maxN && !st.ion) q.innerHTML = '<p class="hint">Höchstes dargestelltes Niveau – keine weitere Anregung möglich.</p>';
+  }
+
+  const sb = $('stepBtns'); sb.innerHTML = '';
+  if (st.mode === 'auto'){
+    sb.innerHTML = '<p class="hint">Das Elektron fällt nach kurzer Zeit von selbst zurück – zufällig direkt oder stufenweise.</p>';
+  } else if (n === 1){
+    sb.innerHTML = '<p class="hint">Grundzustand – tiefer geht es nicht.</p>';
+  } else {
+    const top = n === Infinity ? st.maxN : n - 1;
+    for (let m = 1; m <= top; m++){
+      const dE = En(n) - En(m), ci = colorInfo(lam(dE));
+      sb.appendChild(chip(`<span class="dot" style="background:${swatchBg(ci)}"></span>${n === Infinity ? 'Einfang' : 'Emission'} → n = ${m} · ${num(dE)} eV`,
+        () => stepEmit(m), st.busy));
+    }
+  }
+}
+
+/* ---------- Start ---------- */
+drawOrbits(); drawLevels(); placeMarker();
+setE(10.2); calcIntro(); renderSpectrum(); updateUI();
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
